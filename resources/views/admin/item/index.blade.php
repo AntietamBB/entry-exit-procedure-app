@@ -9,7 +9,7 @@
     <div class="nk-block-head nk-block-head-sm">
         <div class="nk-block-between">
             <div class="nk-block-head-content">
-                <h3 class="nk-block-title page-title">Manage Items for Category 1</h3>
+                <h3 class="nk-block-title page-title">Manage Items for {{ $category->title }}</h3>
                 <div class="nk-block-des text-soft">
                     <!--<p>Lorem ipsum dolor, sit amet, consectetur adipisicing elit.</p>-->
                 </div>
@@ -43,35 +43,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
-                        <tr class="tb-tnx-item">
-                            <td class="tb-id">1</td>
-                            <td>Item 1</td>
-                            <td>{{ date('M d, Y', time()) }}</td>
-                            <td class="tb-tnx-action">
-                                <a href="{{ url('category/1/item/1/edit') }}"><em class="icon ni ni-edit-alt"></em><span> Edit</span></a>
-                                <a href="#" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span> Remove</span></a>
-                            </td>
-                            </td>
-                        </tr>
-                        <tr class="tb-tnx-item">
-                            <td class="tb-id">2</td>
-                            <td>Item 2</td>
-                            <td>{{ date('M d, Y', time()) }}</td>
-                            <td class="tb-tnx-action">
-                                <a href="{{ url('category/1/item/1/edit') }}"><em class="icon ni ni-edit-alt"></em><span> Edit</span></a>
-                                <a href="#" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span> Remove</span></a>
-                            </td>
-                        </tr>
-                        <tr class="tb-tnx-item">
-                            <td class="tb-id">3</td>
-                            <td>Item 3</td>
-                            <td>{{ date('M d, Y', time()) }}</td>
-                            <td class="tb-tnx-action">
-                                <a href="{{ url('category/1/item/1/edit') }}"><em class="icon ni ni-edit-alt"></em><span> Edit</span></a>
-                                <a href="#" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span> Remove</span></a>
-                            </td>
-                        </tr>
+							@php
+                                $i = 1
+                            @endphp
+							@forelse ($items as $item)
+								<tr class="tb-tnx-item">
+									<td class="tb-id">{{ $i++ }}</td>
+									<td>{{ $item->title }}</td>
+									<td>@if($item->created_at) {{ date('M d, Y', strtotime($item->created_at)) }} @endif</td>
+									<td class="tb-tnx-action">
+										<a href="{{ url('category/1/item/1/edit') }}"><em class="icon ni ni-edit-alt"></em><span> Edit</span></a>
+										<a href="#" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span> Remove</span></a>
+									</td>
+									</td>
+								</tr>
+							@empty
+								<tr>
+									<td colspan="4" class="text-center tb-empty">Nothing Found!</td>
+								</tr>
+							@endforelse
                         </tbody>
                     </table>
                 </div>

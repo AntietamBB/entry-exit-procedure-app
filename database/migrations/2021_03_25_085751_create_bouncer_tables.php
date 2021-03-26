@@ -24,7 +24,8 @@ class CreateBouncerTables extends Migration
             $table->boolean('only_owned')->default(false);
             $table->json('options')->nullable();
             $table->integer('scope')->nullable()->index();
-            $table->timestamps();
+            $table->string('created_at');
+			$table->string('updated_at');
         });
 
         Schema::create(Models::table('roles'), function (Blueprint $table) {

@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Bouncer;
+
+use App\Models\Roles;
+use App\Models\Permissions;
+use App\Models\Abilities;
 
 class CategoryItemController extends Controller
 {
@@ -11,9 +16,15 @@ class CategoryItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($category_id)
     {
-        return view('admin.item.index', []);
+        $category = Roles::where("id", "=", $category_id)->first();
+
+        $permissions = Permissions::where("entity_id", "=", $category_id)->select(['ability_id'])->get();
+        
+        $items = Abilities::whereIN('id', $permissions)->get();
+
+        return view('admin.item.index', ['items'=>$items, 'category'=>$category]);
     }
 
     /**
@@ -21,9 +32,11 @@ class CategoryItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($category_id)
     {
-        return view('admin.item.create', []);
+        $category = Roles::where("id", "=", $category_id)->first();
+        
+        return view('admin.item.create', ['category'=>$category]);
     }
 
     /**
@@ -34,7 +47,22 @@ class CategoryItemController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect()->intended('category.item.index', 1);
+        // $validated = $request->validate([
+        //     'title' => 'required|unique',
+        // ]);
+
+        $category = Roles::where("id", "=", $request->category_id)->first();
+
+        // $item = Bouncer::ability()->firstOrCreate([
+        //     'name' => str_replace(' ', '_', strtolower($request->name)),
+        //     'title' => $request->name,
+        // ]);
+        $role = $category->name;
+        $ability = str_replace(' ', '_', strtolower($request->name));
+
+        Bouncer::allow($role)->to($ability);
+        
+        return redirect()->intended('category/'.$request->category_id.'/item');
     }
 
     /**

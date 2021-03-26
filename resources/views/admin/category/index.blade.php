@@ -50,7 +50,7 @@
 								<tr class="tb-tnx-item">
 									<td class="tb-id">{{ $i++ }}</td>
 									<td>{{ $category->title }}</td>
-									<td>@if($category->created_at) {{ date('M d, Y', $category->created_at) }} @endif</td>
+									<td>@if($category->created_at) {{ date('M d, Y', strtotime($category->created_at)) }} @endif</td>
 									<td class="tb-tnx-action">
 										<a href="{{ url('category/1/edit') }}"><em class="icon ni ni-edit-alt"></em><span> Edit</span></a>
 										<a href="{{ url('category/1/item') }}" style="margin-left: 10px;"><em class="icon ni ni-edit-alt"></em><span> View Items</span></a>
@@ -64,26 +64,6 @@
 									<td colspan="4" class="text-center tb-empty">Nothing Found!</td>
 								</tr>
 							@endforelse
-							{{--<tr class="tb-tnx-item">
-								<td class="tb-id">2</td>
-								<td>Category 2</td>
-								<td>{{ date('M d, Y', time()) }}</td>
-								<td class="tb-tnx-action">
-									<a href="{{ url('category/1/edit') }}"><em class="icon ni ni-edit-alt"></em><span> Edit</span></a>
-									<a href="{{ url('category/1/item') }}" style="margin-left: 10px;"><em class="icon ni ni-edit-alt"></em><span> View Items</span></a>
-									<a href="#" class="text-danger" style="margin-left: 10px;"><em class="icon ni ni-trash"></em><span> Remove</span></a>
-								</td>
-							</tr>
-							<tr class="tb-tnx-item">
-								<td class="tb-id">3</td>
-								<td>Category 3</td>
-								<td>{{ date('M d, Y', time()) }}</td>
-								<td class="tb-tnx-action">
-									<a href="{{ url('category/1/edit') }}"><em class="icon ni ni-edit-alt"></em><span> Edit</span></a>
-									<a href="{{ url('category/1/item') }}" style="margin-left: 10px;"><em class="icon ni ni-edit-alt"></em><span> View Items</span></a>
-									<a href="#" class="text-danger" style="margin-left: 10px;"><em class="icon ni ni-trash"></em><span> Remove</span></a>
-								</td>
-							</tr>--}}
                         </tbody>
                     </table>
                 </div>

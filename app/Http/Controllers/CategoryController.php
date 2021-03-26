@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Bouncer;
 
 use App\Models\Roles;
 use App\Models\User;
@@ -17,11 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Roles::get();
-        // $user = User::where('id', 1)->first();
-        // $abilities = $user->getAbilities();
-        // echo '<pre>';
-        // print_r($abilities);
-        // exit;
+ 
         return view('admin.category.index', ['categories'=>$categories]);
     }
 
@@ -47,7 +44,7 @@ class CategoryController extends Controller
         //     'title' => 'required|unique',
         // ]);
 
-        $admin = Bouncer::role()->firstOrCreate([
+        $category = Bouncer::role()->firstOrCreate([
             'name' => str_replace(' ', '_', strtolower($request->name)),
             'title' => $request->name,
         ]);
