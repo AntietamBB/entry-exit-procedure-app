@@ -28,8 +28,7 @@ class UserController extends Controller
         } else {
             $users = User::where('user_type', '<>', 'super_admin')->orderBy('id')->get();
         }*/
-		$users = User::where('user_type', '<>', 'super_admin')->orderBy('id')->get();
-
+		$users = User::where('user_type','admin')->with('roles')->orderBy('id')->get();
     	return view('admin.user.index', ['users' => $users]);
     }
 
@@ -40,44 +39,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        // if($request->isMethod('post')) {
-
-            // $validatedData = $request->validate([
-            //     'name' => 'required',
-            //     'email' => 'required|email|unique:users,email',
-            //     'user_type' => 'required'
-            // ]);
-			
-            // $token = $this->getToken();
-            // $user = User::create([
-            //     'name'          => $request->name,
-            //     'email'         => $request->email,
-            //     'phone'         => $request->phone,
-            //     'user_type'     => strtolower($request->user_type),
-            //     'token'         => $token,
-            //     'created_by'    => Auth::user()->id
-            // ]);
-
-            // if($user->id) {
-            //     $data = array('name'=> $request->name,'email'=> $request->email,'link' => $token);
-
-            //     Mail::send('email.mail', $data, function($message) use($data) {
-            //         $message->to($data['email']);
-            //         $message->subject('User Activation for Volkswagen');
-            //         $message->from(env('MAIL_USERNAME'), 'Volkswagen');
-            //     });
-                
-            //     $request->session()->flash('message', 'User added successfully.');
-            //     $request->session()->flash('alert_class', 'success');
-            // } else {
-            //     $request->session()->flash('message', 'Something went wrong, Please try again!');
-            //     $request->session()->flash('alert_class', 'danger');
-            // }
-
-        //     return redirect()->intended('manage-user');
-        // }
-
-        return view('admin.user.create');
+        $roles = \Silber\Bouncer\Database\Role::select(['id','name','title'])->orderBy('name')->get();
+        return view('admin.user.create',['roles' => $roles]);
     }
 
     /**
@@ -88,6 +51,26 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|digits:10'
+        ]);
+        $password =  Hash::make('password');
+        $user = User::create([
+            'user_type' => 'admin',
+            'name'=> $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $password,
+        ]);
+        if(isset($request->category)){
+            $categories = $request->category;
+            foreach($categories as $category){
+                $user->assign($category);
+            }
+        }
+        
         return redirect()->intended('user');
     }
 
@@ -111,38 +94,10 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
+        $categories = $user->getRoles()->toArray();
+        $roles = \Silber\Bouncer\Database\Role::select(['id','name','title'])->orderBy('name')->get();
 
-        // if(empty($user)) {
-        //     $request->session()->flash('message', 'Something went wrong, Please try again!');
-        //     $request->session()->flash('alert_class', 'danger');
-
-        //     return redirect()->intended('manage-user');
-        // }
-
-        // if($request->isMethod('post')) {
-        //     $validatedData = $request->validate([
-        //         'name' => 'required',
-        //         'email' => 'required|email|unique:users,email,'.$user->id,
-        //         'user_type' => 'required'
-        //     ]);
-
-        //     $user->name = $request->name;
-        //     $user->email = $request->email;
-        //     $user->phone = $request->phone;
-        //     $user->user_type = $request->user_type;
-
-        //     if($user->save()) {
-        //         $request->session()->flash('message', 'User updated successfully.');
-        //         $request->session()->flash('alert_class', 'success');
-        //     } else {
-        //         $request->session()->flash('message', 'Something went wrong, Please try again!');
-        //         $request->session()->flash('alert_class', 'danger');
-        //     }
-
-        //     return redirect()->intended('manage-user');
-        // }
-
-        return view('admin.user.edit', ['user' => $user]);
+        return view('admin.user.edit', ['user' => $user,'categories' => $categories,'roles' => $roles]);
     }
 
     /**
@@ -153,8 +108,30 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    {   
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$id,
+            'phone' => 'required|digits:10'
+        ]);
+        $user = User::find($id);
+        $user->update([
+            'name'=> $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+        ]);
+        $old_categories = $user->getRoles()->toArray();
+        foreach($old_categories as $category){
+            $user->retract($category);
+        }
+        if(isset($request->category)){
+            $new_categories = $request->category;
+            foreach($new_categories as $category){
+                $user->assign($category);
+            }
+        }
+        
+        return redirect()->intended('user');
     }
 
     /**
@@ -165,6 +142,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+       User::destroy($id);
+       return redirect()->intended('user');
     }
 }

@@ -14,14 +14,15 @@
     <div class="nk-block nk-block-lg">
         <div class="card card-bordered">
             <div class="card-inner">
-                <form action="" method="post">
+                <form action="<?= url('user/'.$user->id) ?>" method="post">
+                    @method('PUT')
                 	@csrf
                     <div class="row g-4">
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-label" for="full-name">Full Name</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="full-name" name="name" value="Alexandra">
+                                    <input type="text" class="form-control" id="full-name" name="name" value="{{ old('name',$user->name) }}">
                                     @error('name')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
@@ -32,7 +33,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="email-address">Email address</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="email-address" name="email" value="alexandra@yopmail.com">
+                                    <input type="text" class="form-control" id="email-address" name="email" value="{{ old('email',$user->email) }}">
                                     @error('email')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
@@ -43,15 +44,10 @@
                             <div class="form-group">
                                 <label class="form-label" for="phone-no">Phone No</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="phone-no" name="phone" value="1234567890">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-label" for="phone-no">Password</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="password-no" name="password" value="{{ old('password') }}">
+                                    <input type="text" class="form-control" id="phone-no" name="phone" value="{{ old('phone',$user->phone) }}">
+                                    @error('phone')
+                                        <span class="invalid">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -59,131 +55,22 @@
                         <div class="col-lg-12" style="padding-bottom: 0px !important;">
                             <label class="form-label" for="phone-no" style="margin-bottom:0px;">Abilities</label>
                         </div>
-                        
+                    
+                        @foreach($roles as $role)
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <div class="g">
                                     <div class="custom-control custom-control-sm custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck10">
-                                        <label class="custom-control-label" for="customCheck10">Category 1</label>
+                                        <input type="checkbox" class="custom-control-input" name="category[]" value="{{ $role->name }}" id="{{ $role->name }}" {{ in_array($role->name,$categories)  ? 'checked' : '' }}>
+                                        <label class="custom-control-label" for="{{ $role->name }}">{{ $role->title }}</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <div class="g">
-                                    <div class="custom-control custom-control-sm custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck11">
-                                        <label class="custom-control-label" for="customCheck11">Category 2</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <div class="g">
-                                    <div class="custom-control custom-control-sm custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck12">
-                                        <label class="custom-control-label" for="customCheck12">Category 3</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <div class="g">
-                                    <div class="custom-control custom-control-sm custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck13">
-                                        <label class="custom-control-label" for="customCheck13">Category 4</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <div class="g">
-                                    <div class="custom-control custom-control-sm custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck14">
-                                        <label class="custom-control-label" for="customCheck14">Category 5</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <div class="g">
-                                    <div class="custom-control custom-control-sm custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck15">
-                                        <label class="custom-control-label" for="customCheck15">Category 6</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <div class="g">
-                                    <div class="custom-control custom-control-sm custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck16">
-                                        <label class="custom-control-label" for="customCheck16">Category 7</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <div class="g">
-                                    <div class="custom-control custom-control-sm custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck17">
-                                        <label class="custom-control-label" for="customCheck17">Category 8</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <div class="g">
-                                    <div class="custom-control custom-control-sm custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck18">
-                                        <label class="custom-control-label" for="customCheck18">Category 9</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3"> 
-                            <div class="form-group">
-                                <div class="g">
-                                    <div class="custom-control custom-control-sm custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck19">
-                                        <label class="custom-control-label" for="customCheck19">Category 10</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <div class="g">
-                                    <div class="custom-control custom-control-sm custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck20">
-                                        <label class="custom-control-label" for="customCheck20">Category 11</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                        @endforeach
                         <div class="col-12">
                             <div class="form-group">
-                                <a href="{{ url('user') }}"><button type="button" class="btn btn-lg btn-primary"><em class="icon ni ni-save"></em><span>Save</span></button></a>
+                                <button type="submit" class="btn btn-lg btn-primary"><em class="icon ni ni-save"></em><span>Save</span></button>
                             </div>
                         </div>
                     </div>

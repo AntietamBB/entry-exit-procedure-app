@@ -47,44 +47,6 @@
                         </thead>
                         <tbody>
                             
-                        <tr class="tb-tnx-item">
-                            <td class="tb-id">1</td>
-                            <td>Alexandra</td>
-                            <td>alexandra@yopmail.com</td>
-                            <td>1234567890</td>
-                            <td>Category 1, Category 2</td>
-                            <td>{{ date('M d, Y', time()) }}</td>
-                            <td class="tb-tnx-action">
-                                <a href="{{ url('user/1/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a>
-                                <a href="#" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span>Remove</span></a>
-                            </td>
-                            </td>
-                        </tr>
-                        <tr class="tb-tnx-item">
-                            <td class="tb-id">2</td>
-                            <td>Austin</td>
-                            <td>austin@yopmail.com</td>
-                            <td>1234567890</td>
-                            <td>Category 1, Category 4</td>
-                            <td>{{ date('M d, Y', time()) }}</td>
-                            <td class="tb-tnx-action">
-                                <a href="{{ url('user/1/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a>
-                                <a href="#" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span>Remove</span></a>
-                            </td>
-                        </tr>
-                        <tr class="tb-tnx-item">
-                            <td class="tb-id">3</td>
-                            <td>Justin</td>
-                            <td>justin@yopmail.com</td>
-                            <td>1234567890</td>
-                            <td>Category 3, Category 5</td>
-                            <td>{{ date('M d, Y', time()) }}</td>
-                            <td class="tb-tnx-action">
-                                <a href="{{ url('user/1/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a>
-                                <a href="#" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span>Remove</span></a>
-                            </td>
-                        </tr>
-                            
                             
                             
                             @php
@@ -96,16 +58,28 @@
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->phone }}</td>
-                                    <td>{{ ucwords(str_replace('_', ' ', $user->user_type)) }}</td>
                                     <td>
+                                        @php
+                                            $roles = ''
+                                        @endphp
+                                        @if ($user->roles != null)
+                                            @foreach($user->roles as $role)
+                                                @php
+                                                    $roles.= $role->title.','
+                                                @endphp
+                                            @endforeach
+                                        @endif
+                                        {{ rtrim($roles,',') }}
+                                    </td>
+                                    <!-- <td>
                                         @if(is_null($user->password))
                                             <span class="badge badge-dot badge-warning">Pending</span>
                                         @else
                                             <span class="badge badge-dot badge-success">Active</span>
                                         @endif
-                                    </td>
-                                    <td>{{ date('d M Y', strtotime($user->created_at)) }}</td>
-                                    <td class="tb-tnx-action">
+                                    </td> -->
+                                    <td>{{ date('M d, Y', strtotime($user->created_at)) }}</td>
+                                    <!-- <td class="tb-tnx-action">
                                         @if(Auth::user()->user_type == 'super_admin' || $user->created_by == Auth::user()->id || $user->id == Auth::user()->id)
 											<div class="dropdown">
 												<a class="text-soft dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown" data-offset="-8,0" aria-expanded="false"><em class="icon ni ni-more-h"></em></a>
@@ -122,6 +96,14 @@
 												</div>
 											</div>
 										@endif
+                                    </td> -->
+                                    <td>
+                                        <a href="{{ url('user/'.$user->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a>
+                                        <form method="post" action="<?= url('user/'.$user->id) ?>" id="user_{{ $user->id }}" style="display:inline-block">
+                                            @method('DELETE')
+                                            @csrf
+                                            <a onClick="deleteUser({{ $user->id }})" href="javascript:void(0)" rel="nofollow" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span>Remove</span></a>
+                                        </form>
                                     </td>
                                 </tr>
                             @empty
@@ -151,3 +133,11 @@
         </div>
     </div>
 @endsection
+<script>
+    function deleteUser(id){
+        console.log(id);
+        if(confirm('Are you sure you want to delte this user ?')){
+            $('#user_'+id).submit();
+        }
+    }
+</script>
