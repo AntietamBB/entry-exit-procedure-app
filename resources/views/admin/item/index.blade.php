@@ -16,7 +16,7 @@
             </div>
             <div class="nk-block-head-content">
                 <div class="toggle-wrap nk-block-tools-toggle">
-                    <a class="btn btn-primary" href="{{ url('category/1/item/create') }}"><em class="icon ni ni-plus"></em><span>Add Item</span></a>
+                    <a class="btn btn-primary" href="{{ url('category/'.$category->id.'/item/create') }}"><em class="icon ni ni-plus"></em><span>Add Item</span></a>
                 </div>
             </div>
         </div>

@@ -40,7 +40,8 @@
                                 <th scope="col">Full Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Phone</th>
-                                <th scope="col">Abilities</th>
+                                <th scope="col">Entry Form Abilities</th>
+                                <th scope="col">Exit Form Abilities</th>
                                 <th scope="col">Created On</th>
                                 <th>Action</th>
                             </tr>
@@ -58,19 +59,26 @@
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->phone }}</td>
-                                    <td>
-                                        @php
-                                            $roles = ''
+                                    @php
+                                            $entry_roles = '';
+                                            $exit_roles = '';
                                         @endphp
                                         @if ($user->roles != null)
                                             @foreach($user->roles as $role)
-                                                @php
-                                                    $roles.= $role->title.','
-                                                @endphp
+                                                @if ($role->level == 1)
+                                                    @php
+                                                        $entry_roles.= $role->title.', '
+                                                    @endphp
+                                                @else
+                                                    @php
+                                                        $exit_roles.= $role->title.', '
+                                                    @endphp
+                                                @endif
                                             @endforeach
                                         @endif
-                                        {{ rtrim($roles,',') }}
-                                    </td>
+                                        
+                                    <td>{{ rtrim($entry_roles,', ') }}</td>
+                                    <td>{{ rtrim($exit_roles,', ') }}</td>
                                     <!-- <td>
                                         @if(is_null($user->password))
                                             <span class="badge badge-dot badge-warning">Pending</span>

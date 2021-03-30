@@ -63,7 +63,11 @@ Route::match(['get', 'post'], 'forgot_password', [AdminController::class, 'forgo
 
 Route::match(['get', 'post'], 'entry-form/{id?}', [AdminController::class, 'entry_form'])->middleware('admin');
 
+Route::match(['get', 'post'], 'entry-form-save/{id?}', [AdminController::class, 'entry_form_save'])->middleware('admin');
+
 Route::match(['get', 'post'], 'exit-form/{id?}', [AdminController::class, 'exit_form'])->middleware('admin');
+
+Route::match(['get', 'post'], 'exit-form-save/{id?}', [AdminController::class, 'exit_form_save'])->middleware('admin');
 
 Route::resource('user', UserController::class);
 Route::resource('category', CategoryController::class);
