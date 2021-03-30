@@ -63,22 +63,27 @@
                             </tr>
                         </thead>
                         <tbody>
+                        <?php $no=1;?>
+                        @foreach($user as $users)
                             <tr class="tb-tnx-item">
-                                <td class="tb-id">1</td>
-                                <td>Michael</td>
-                                <td>michael@yopmail.com</td>
-                                <td>1234567890</td>
+                                <td class="tb-id">{{$no++}}</td>
+                                <td>{{$users->name}}</td>
+                                <td>{{$users->email}}</td>
+                                <td>{{$users->phone}}</td>
                                 <td>
                                     <span class="badge badge-dot badge-success">Active</span>
                                 </td>
                                 <td>{{ date('M d, Y', time()) }}</td>
                                 <td class="tb-tnx-action">
-                                    <a href="{{ url('employee/1/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a><br>
+                                    <a href="{{ url('employee/'.$users->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a><br>
                                     <a href="#" class="text-danger"><em class="icon ni ni-minus-circle-fill"></em><span>Exit</span></a><br>
-                                    <a href="#" class="text-danger"><em class="icon ni ni-trash"></em><span>Remove</span></a><br>
+        
+                                   <a href="{{ url('employee/delete/' . $users->id) }}" onclick="return confirm('Are you sure you want to delete ?')" class="text-danger"><em class="icon ni ni-trash"></em><span>Remove</span></a><br>
+                                   
                                 </td>
                             </tr>
-                            <tr class="tb-tnx-item">
+
+                            <!-- <tr class="tb-tnx-item">
                                 <td class="tb-id">2</td>
                                 <td>Sebastian</td>
                                 <td>sebastian@yopmail.com</td>
@@ -136,8 +141,9 @@
                                     <a href="{{ url('employee/1/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a><br>
                                     <a href="{{ url('exit-form') }}"><em class="icon ni ni-file-check"></em><span>Exit Form</span></a><br>
                                     <a href="#" class="text-danger"><em class="icon ni ni-trash"></em><span>Remove</span></a><br>
-                                </td>
-                            </tr>
+                                </td> -->
+                            
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

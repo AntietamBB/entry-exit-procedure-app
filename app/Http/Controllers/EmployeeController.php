@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Employee;
+use DB;
 
 class EmployeeController extends Controller
 {
@@ -13,7 +15,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return view('admin.employee.index', []);
+    	$user = Employee::select('*')->from('users')->get();
+        return view('admin.employee.index', ['user'=>$user]);
     }
 
     /**
@@ -35,8 +38,25 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+            if($request->isMethod('post')) {
+
+             $validatedData = $request->validate([
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email',
+             'phone' => 'required',
+             ]);
+			
+          
+             $user = Employee::create([
+                 'name'          => $request->name,
+                 'email'         => $request->email,
+                 'phone'         => $request->phone,
+                 'user_type'     => 'user',
+                 'password'=>'password',
+             ]);
         return redirect()->intended('employee');
     }
+}
 
     /**
      * Display the specified resource.
@@ -57,7 +77,9 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.employee.edit', []);
+    
+        $employee=DB::select('select * from users where id=?',[$id]);
+        return view('admin.employee.edit',['employee'=>$employee]);
     }
 
     /**
@@ -67,10 +89,20 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$id)
     {
-        //
-    }
+        
+        $id=$request->input('id');
+        $name=$request->input('name');
+        $email=$request->input('email');
+        $phone=$request->input('phone');
+   
+        DB::update('update users set name=?,email=?,phone=? where id=?',[$name,$email,$phone,$id]);
+        return redirect()->intended('employee');
+   }
+
+        
+    
 
     /**
      * Remove the specified resource from storage.
@@ -80,6 +112,9 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        //
+           
+        $user=DB::delete('delete from users where id=?',[$id]);
+       
+        return redirect()->intended('employee');
     }
 }

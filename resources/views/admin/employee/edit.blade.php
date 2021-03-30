@@ -14,14 +14,17 @@
     <div class="nk-block nk-block-lg">
         <div class="card card-bordered">
             <div class="card-inner">
-                <form action="" method="post">
+                <form action="<?= url('employee/update/') ?>" method="post">
+                @method('PATCH')
+                <input type="hidden" name="id" value="<?php echo $employee[0]->id;?>">
                 	@csrf
+                
                     <div class="row g-4">
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-label" for="full-name">Full Name</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="full-name" name="name" value="Michael">
+                                    <input type="text"  class="form-control" id="full-name" value="<?php echo $employee[0]->name;?>" name="name" >
                                     @error('name')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
@@ -32,7 +35,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="email-address">Email address</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="email-address" name="email" value="michael@yopmail.com">
+                                    <input type="text" class="form-control" id="email-address" name="email" value="<?php echo $employee[0]->email;?>">
                                     @error('email')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
@@ -43,7 +46,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="phone-no">Phone No</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="phone-no" name="phone" value="1234567890">
+                                    <input type="text" class="form-control" id="phone-no" name="phone" value="<?php echo $employee[0]->phone;?>">
                                 </div>
                             </div>
                         </div>

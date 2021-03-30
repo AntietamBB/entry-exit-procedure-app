@@ -44,6 +44,9 @@
                                 <label class="form-label" for="phone-no">Phone No</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="phone-no" name="phone" value="{{ old('phone') }}">
+                                    @error('phone')
+                                        <span class="invalid">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
