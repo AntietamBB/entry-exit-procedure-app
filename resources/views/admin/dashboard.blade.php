@@ -18,13 +18,16 @@
                     <div class="col-sm-10 col-xxl-12">
                         <div class="nk-order-ovwg-data sell">
                             <div class="title"> Total Admin Users</div>
-                            <div class="amount">250 </div>
+                            
+                      
+                
+                            <div class="amount"><?php echo $admin->count()?> </div>
                         </div>
                     </div>
                     
                 </div>
             </div><!-- .col -->
-			
+		
             <!-- <div class="col-md-4">
                 <img src="/images/logo.jpg" />
             </div> -->
@@ -35,7 +38,7 @@
                     <div class="col-sm-10 col-xxl-12">
                         <div class="nk-order-ovwg-data buy">
                             <div class="title"> Total Employees</div>
-                            <div class="amount">999 </div>
+                            <div class="amount"><?php echo $users->count()?> </div>
                         </div>
                     </div>
                     
