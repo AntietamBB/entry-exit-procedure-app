@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\EntryForm;
+use App\Models\ExitForm;
 use App\Rules\Filetype;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -135,13 +137,74 @@ class AdminController extends Controller
     }
 
     public function entry_form(Request $request, $id = null) {
-        return view('admin.entry-form', []);
+        $user = User::find($id);
+        $entry_categories = \Silber\Bouncer\Database\Role::where('level',1)->with('abilities')->orderBy('name')->get();
+        $user_abilities = EntryForm::where('user_id',$id)->pluck('ability_id')->toArray();
+        $user_categories = $user->getRoles()->toArray();
+        // echo "<pre>";print_r($user_abilitites);exit;
+        return view('admin.entry-form', [
+            'categories' => $entry_categories,
+            'user_categories' => $user_categories,
+            'user_abilities' => $user_abilities,
+            'user' => $user
+        ]);
+    }
+
+    public function entry_form_save(Request $request, $id = null){
+        if(isset($request->abilities)){
+            $abilities  = $request->abilities;
+            foreach($abilities as $ability){
+                $form = EntryForm::where('user_id',$id)->where('ability_id',$ability)->first();
+                if(empty($form)){
+                    EntryForm::create([
+                        'user_id' => $id,
+                        'ability_id' => $ability, 
+                        'created_at' => date('Y-m-d h:i:s', time())
+                    ]);
+                }
+            }
+            EntryForm::where('user_id',$id)->whereNotIn('ability_id',$abilities)->delete();
+        }
+        else{
+            EntryForm::where('user_id',$id)->delete();
+        }
+        return redirect()->intended("entry-form/$id");
     }
 
     public function exit_form(Request $request, $id = null) {
-        return view('admin.exit-form', []);
+        $user = User::find($id);
+        $entry_categories = \Silber\Bouncer\Database\Role::where('level',2)->with('abilities')->orderBy('name')->get();
+        $user_abilities = ExitForm::where('user_id',$id)->pluck('ability_id')->toArray();
+        $user_categories = $user->getRoles()->toArray();
+        // echo "<pre>";print_r($user_abilitites);exit;
+        return view('admin.exit-form', [
+            'categories' => $entry_categories,
+            'user_categories' => $user_categories,
+            'user_abilities' => $user_abilities,
+            'user' => $user
+        ]);
     }
-    
+    public function exit_form_save(Request $request, $id = null){
+        if(isset($request->abilities)){
+            $abilities  = $request->abilities;
+            foreach($abilities as $ability){
+                $form = ExitForm::where('user_id',$id)->where('ability_id',$ability)->first();
+                if(empty($form)){
+                    ExitForm::create([
+                        'user_id' => $id,
+                        'ability_id' => $ability, 
+                        'created_at' => date('Y-m-d h:i:s', time())
+                    ]);
+                }
+            }
+            ExitForm::where('user_id',$id)->whereNotIn('ability_id',$abilities)->delete();
+        }
+        else{
+            ExitForm::where('user_id',$id)->delete();
+        }
+        return redirect()->intended("exit-form/$id");
+    }
+
     protected function getToken() {
         return hash_hmac('sha256', str_random(40), config('app.key'));
     }
