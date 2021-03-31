@@ -65,7 +65,7 @@
                                         @endphp
                                         @if ($user->roles != null)
                                             @foreach($user->roles as $role)
-                                                @if ($role->level == 1)
+                                                @if ($role->form_type == 1)
                                                     @php
                                                         $entry_roles.= $role->title.', '
                                                     @endphp

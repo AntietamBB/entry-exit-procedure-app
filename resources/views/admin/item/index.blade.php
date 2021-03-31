@@ -52,8 +52,12 @@
 									<td>{{ $item->title }}</td>
 									<td>@if($item->created_at) {{ date('M d, Y', strtotime($item->created_at)) }} @endif</td>
 									<td class="tb-tnx-action">
-										<a href="{{ url('category/1/item/1/edit') }}"><em class="icon ni ni-edit-alt"></em><span> Edit</span></a>
-										<a href="#" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span> Remove</span></a>
+										<a href="{{ url('category/'.$category->id.'/item/'.$item->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span> Edit</span></a>
+                                        <form method="post" action="<?= url('category/'.$category->id.'/item/'.$item->id) ?>" id="item_{{ $item->id }}" style="display:inline-block">
+                                            @method('DELETE')
+                                            @csrf
+                                            <a onClick="deleteItem({{ $item->id }})" href="javascript:void(0)" rel="nofollow" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span>Remove</span></a>
+                                        </form>
 									</td>
 									</td>
 								</tr>
@@ -84,3 +88,10 @@
         </div>
     </div>
 @endsection
+<script>
+    function deleteItem(id){
+        if(confirm('Are you sure you want to delte this item ?')){
+            $('#item_'+id).submit();
+        }
+    }
+</script>

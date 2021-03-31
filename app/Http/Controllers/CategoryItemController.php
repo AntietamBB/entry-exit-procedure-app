@@ -8,6 +8,8 @@ use Bouncer;
 use App\Models\Roles;
 use App\Models\Permissions;
 use App\Models\Abilities;
+use App\Models\EntryForm;
+use App\Models\ExitForm;
 
 class CategoryItemController extends Controller
 {
@@ -47,9 +49,9 @@ class CategoryItemController extends Controller
      */
     public function store(Request $request)
     {
-        // $validated = $request->validate([
-        //     'title' => 'required|unique',
-        // ]);
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
 
         $category = Roles::where("id", "=", $request->category_id)->first();
 
@@ -82,9 +84,10 @@ class CategoryItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        return view('admin.item.edit', []);
+    public function edit($category_id,$item_id)
+    {   
+        $item = Abilities::find($item_id);
+        return view('admin.item.edit', ['item' => $item ,'category_id' => $category_id]);
     }
 
     /**
@@ -94,9 +97,10 @@ class CategoryItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $category_id,$item_id)
     {
-        //
+        Abilities::where('id',$item_id)->update(['title' => $request->name]);
+        return redirect()->intended('category/'.$category_id.'/item');
     }
 
     /**
@@ -105,8 +109,11 @@ class CategoryItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($category_id,$item_id)
     {
-        //
+        Abilities::destroy($item_id);
+        EntryForm::where('ability_id',$item_id)->delete();
+        ExitForm::where('ability_id',$item_id)->delete();
+        return redirect()->intended('category/'.$category_id.'/item');
     }
 }

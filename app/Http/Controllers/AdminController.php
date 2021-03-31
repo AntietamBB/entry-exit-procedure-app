@@ -144,70 +144,118 @@ class AdminController extends Controller
     }
 
     public function entry_form(Request $request, $id = null) {
-        $user = User::find($id);
-        $entry_categories = \Silber\Bouncer\Database\Role::where('level',1)->with('abilities')->orderBy('name')->get();
-        $user_abilities = EntryForm::where('user_id',$id)->pluck('ability_id')->toArray();
+        $user_id = Auth::id();
+        $user = User::find($user_id);
+        $employee = User::find($id);
+        $entry_categories = \Silber\Bouncer\Database\Role::where('form_type',1)->with('abilities')->orderBy('name')->get();
+        $employee_abilities = EntryForm::where('employee_id',$id)->with('user')->get()->toArray();
         $user_categories = $user->getRoles()->toArray();
-        // echo "<pre>";print_r($user_abilitites);exit;
         return view('admin.entry-form', [
             'categories' => $entry_categories,
             'user_categories' => $user_categories,
-            'user_abilities' => $user_abilities,
-            'user' => $user
+            'employee_abilities' => $employee_abilities,
+            'user' => $user,
+            'employee' => $employee,
         ]);
     }
 
     public function entry_form_save(Request $request, $id = null){
+        $user_id = Auth::id();
+        $user = User::where('id',$user_id)->first();
+        $user_abilitites = $user->getAbilities()->pluck('id')->toArray();
+        $remaining_entries = null;
         if(isset($request->abilities)){
             $abilities  = $request->abilities;
             foreach($abilities as $ability){
-                $form = EntryForm::where('user_id',$id)->where('ability_id',$ability)->first();
+                $form = EntryForm::where('employee_id',$id)->where('ability_id',$ability)->first();
                 if(empty($form)){
                     EntryForm::create([
-                        'user_id' => $id,
+                        'employee_id' => $id,
                         'ability_id' => $ability, 
+                        'user_id' => Auth::id(), 
                         'created_at' => date('Y-m-d h:i:s', time())
                     ]);
                 }
             }
-            EntryForm::where('user_id',$id)->whereNotIn('ability_id',$abilities)->delete();
+            if($user->user_type == 'super_admin'){
+                EntryForm::where('employee_id',$id)->whereNotIn('ability_id',$abilities)->delete();
+            }
+            else{
+                $remaining_entries = EntryForm::where('employee_id',$id)->whereNotIn('ability_id',$abilities)->get();
+            }
         }
         else{
-            EntryForm::where('user_id',$id)->delete();
+            if($user->user_type == 'super_admin'){
+                EntryForm::where('employee_id',$id)->delete();
+            }
+            else{
+                $remaining_entries =  EntryForm::where('employee_id',$id)->get();
+            }
+        }
+        if( $remaining_entries != null){
+            foreach($remaining_entries as $entry){
+                if(in_array($entry->ability_id,$user_abilitites)){
+                    $entry->delete();
+                }
+            }
         }
         return redirect()->intended("entry-form/$id");
     }
 
     public function exit_form(Request $request, $id = null) {
-        $user = User::find($id);
-        $entry_categories = \Silber\Bouncer\Database\Role::where('level',2)->with('abilities')->orderBy('name')->get();
-        $user_abilities = ExitForm::where('user_id',$id)->pluck('ability_id')->toArray();
+        $user_id = Auth::id();
+        $user = User::find($user_id);
+        $employee = User::find($id);
+        $entry_categories = \Silber\Bouncer\Database\Role::where('form_type',2)->with('abilities')->orderBy('name')->get();
+        $employee_abilities = ExitForm::where('employee_id',$id)->with('user')->get()->toArray();
         $user_categories = $user->getRoles()->toArray();
-        // echo "<pre>";print_r($user_abilitites);exit;
         return view('admin.exit-form', [
             'categories' => $entry_categories,
             'user_categories' => $user_categories,
-            'user_abilities' => $user_abilities,
-            'user' => $user
+            'employee_abilities' => $employee_abilities,
+            'user' => $user,
+            'employee' => $employee
         ]);
     }
     public function exit_form_save(Request $request, $id = null){
+        $user_id = Auth::id();
+        $user = User::where('id',$user_id)->first();
+        $user_abilitites = $user->getAbilities()->pluck('id')->toArray();
+        $remaining_exits = null;
         if(isset($request->abilities)){
             $abilities  = $request->abilities;
             foreach($abilities as $ability){
-                $form = ExitForm::where('user_id',$id)->where('ability_id',$ability)->first();
+                $form = ExitForm::where('employee_id',$id)->where('ability_id',$ability)->first();
                 if(empty($form)){
                     ExitForm::create([
-                        'user_id' => $id,
+                        'employee_id' => $id,
                         'ability_id' => $ability, 
+                        'user_id' => Auth::id(), 
                         'created_at' => date('Y-m-d h:i:s', time())
                     ]);
                 }
             }
-            ExitForm::where('user_id',$id)->whereNotIn('ability_id',$abilities)->delete();
+            if($user->user_type == 'super_admin'){
+                ExitForm::where('employee_id',$id)->whereNotIn('ability_id',$abilities)->delete();
+            }
+            else{
+                $remaining_exits = ExitForm::where('employee_id',$id)->whereNotIn('ability_id',$abilities)->get();
+            }
         }
         else{
-            ExitForm::where('user_id',$id)->delete();
+            if($user->user_type == 'super_admin'){
+                ExitForm::where('employee_id',$id)->delete();
+            }
+            else{
+                $remaining_exits =  ExitForm::where('employee_id',$id)->get();
+            }
+        }
+        if( $remaining_exits != null){
+            foreach($remaining_exits as $entry){
+                if(in_array($entry->ability_id,$user_abilitites)){
+                    $entry->delete();
+                }
+            }
         }
         return redirect()->intended("exit-form/$id");
     }

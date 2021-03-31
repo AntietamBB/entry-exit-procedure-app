@@ -69,7 +69,7 @@ Route::match(['get', 'post'], 'exit-form/{id?}', [AdminController::class, 'exit_
 
 Route::match(['get', 'post'], 'exit-form-save/{id?}', [AdminController::class, 'exit_form_save'])->middleware('admin');
 
-Route::resource('user', UserController::class);
-Route::resource('category', CategoryController::class);
-Route::resource('category.item', CategoryItemController::class);
-Route::resource('employee', EmployeeController::class);
+Route::resource('user', UserController::class)->middleware('admin');
+Route::resource('category', CategoryController::class)->middleware('admin');
+Route::resource('category.item', CategoryItemController::class)->middleware('admin');
+Route::resource('employee', EmployeeController::class)->middleware('admin');

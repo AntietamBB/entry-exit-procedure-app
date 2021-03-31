@@ -23,7 +23,7 @@
                                 <div class="form-control-wrap">
                                     <input type="hidden" class="form-control" id="category_id" name="category_id" value="{{ $category->id }}">
 									<input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
-                                    @error('item')
+                                    @error('name')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
                                 </div>

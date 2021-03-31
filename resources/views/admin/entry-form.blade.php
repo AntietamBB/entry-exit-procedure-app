@@ -4,7 +4,7 @@
 	<div class="nk-block-head nk-block-head-sm">
         <div class="nk-block-between">
             <div class="nk-block-head-content">
-                <h3 class="nk-block-title page-title">Employee Exit Form</h3>
+                <h3 class="nk-block-title page-title">Employee Entry Form</h3>
                 <div class="nk-block-des text-soft">
                     <!--<p>Lorem ipsum dolor, sit amet, consectetur adipisicing elit.</p>-->
                 </div>
@@ -15,14 +15,14 @@
     <div class="nk-block nk-block-lg">
         <div class="card card-bordered">
             <div class="card-inner">
-                <form action="<?= url('entry-form-save/'.$user->id) ?>" method="post">
+                <form action="<?= url('entry-form-save/'.$employee->id) ?>" method="post">
                 	@csrf
                     <div class="row g-4">
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-label" for="email-address">Name</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="email-address" name="email" value="{{ $user->name }}">
+                                    <input type="text" class="form-control" id="email-address" name="email" value="{{ $employee->name }}">
                                     @error('email')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
@@ -95,10 +95,19 @@
                                 <div class="form-group">
                                     <div class="g">
                                         <div class="custom-control custom-control-sm custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="{{ $ability->name }}" name="abilities[]" value="{{ $ability->id }}" {{ !in_array($category->name,$user_categories) ? 'disabled' : '' }} 
-                                            {{ in_array($ability->id,$user_abilities) ? 'checked' : '' }}>
+                                            @php
+                                                $key = array_search($ability->id, array_column($employee_abilities, 'ability_id'));
+                                            @endphp
+                                            <input type="checkbox" class="custom-control-input" id="{{ $ability->name }}" name="abilities[]" value="{{ $ability->id }}" 
+                                            {{ (($user->user_type != 'super_admin') and (!in_array($category->name,$user_categories))) ? 'disabled' : '' }} 
+                                            {{ $key !== false ? 'checked' : '' }}>
                                             <label class="custom-control-label" for="{{ $ability->name }}">{{ $ability->title }}</label>
                                         </div>
+                                        @if($key !== false )
+                                            <div style="font-size:10px;margin-left:30px">
+                                                <i>{{ $employee_abilities[$key]['user']['name'] }} - {{ date('M d, Y',strtotime($ability->created_at))}}</i>    
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                                 @empty
@@ -118,7 +127,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="email-address">Email Address</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="email-address" name="email" value="{{ $user->email }}">
+                                    <input type="text" class="form-control" id="email-address" name="email" value="{{ $employee->email }}">
                                     @error('email')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
@@ -129,7 +138,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="email-address">Phone Ext</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="email-address" name="email" value="+1{{ $user->phone }}">
+                                    <input type="text" class="form-control" id="email-address" name="email" value="+1{{ $employee->phone }}">
                                     @error('email')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror

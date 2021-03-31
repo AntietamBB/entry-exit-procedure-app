@@ -14,14 +14,15 @@
     <div class="nk-block nk-block-lg">
         <div class="card card-bordered">
             <div class="card-inner">
-                <form action="" method="post">
+                <form action="<?= url('category/'.$category_id.'/item/'.$item->id) ?>" method="post">
+                    @method('PUT')
                 	@csrf
                     <div class="row g-4">
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-label" for="full-name">Item Name</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="full-name" name="name" value="Item 1">
+                                    <input type="text" class="form-control" id="full-name" name="name" value="{{ $item->title }}">
                                     @error('name')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
@@ -31,7 +32,7 @@
 
                         <div class="col-12">
                             <div class="form-group">
-                                <a href="{{ url('category/1/item') }}"><button type="button" class="btn btn-lg btn-primary"><em class="icon ni ni-save"></em><span>Save</span></button></a>
+                                <button type="submit" class="btn btn-lg btn-primary"><em class="icon ni ni-save"></em><span>Save</span></button>
                             </div>
                         </div>
                     </div>

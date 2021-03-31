@@ -28,8 +28,8 @@
                 <div class="nk-sidebar-element nk-sidebar-head">
                     <div class="nk-sidebar-brand" style="text-align:center; width:100%;">
                         <a href="<?= url('dashboard') ?>" class="logo-link nk-sidebar-logo" style="margin-top:7px;">
-                            <img class="logo-light logo-img" src="/images/logo.jpg" srcset="./images/logo.jpg 2x" alt="logo" style="max-height:50px;">
-                            <img class="logo-dark logo-img" src="/images/logo.jpg" srcset="./images/logo.jpg 2x" alt="logo-dark" style="max-height:50px;">
+                            <img class="logo-light logo-img" src="{{url('')}}/images/logo.jpg" srcset="{{url('')}}/images/logo.jpg 2x" alt="logo" style="max-height:50px;">
+                            <img class="logo-dark logo-img" src="{{url('')}}/images/logo.jpg" srcset="{{url('')}}/images/logo.jpg 2x" alt="logo-dark" style="max-height:50px;">
                         </a>
                     </div>
                     <div class="nk-menu-trigger mr-n2">

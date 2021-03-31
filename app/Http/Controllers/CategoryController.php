@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Abilities;
+use App\Models\EntryForm;
+use App\Models\ExitForm;
 use Illuminate\Http\Request;
 use Bouncer;
 
@@ -45,13 +48,13 @@ class CategoryController extends Controller
             'category_form' => 'required'
         ]);
         $type = ($request->category_form == 1) ? 'entry_' : 'exit_';
-        
+        $name = $type.str_replace(' ', '_', strtolower($request->name));
         $category = Bouncer::role()->firstOrCreate([
-            'name' => $type.str_replace(' ', '_', strtolower($request->name)),
+            'name' => $name,
             'title' => $request->name,
-            'level' => $request->category_form
+            
         ]);
-        
+        Roles::where('name',$name)->update(['form_type' => $request->category_form]);
         return redirect()->intended('category');
     }
 
@@ -74,7 +77,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.category.edit', []);
+        $category = Roles::find($id);
+        return view('admin.category.edit', ['category' => $category]);
     }
 
     /**
@@ -86,7 +90,8 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Roles::where('id',$id)->update(['title' => $request->name]);
+        return redirect()->intended('category');
     }
 
     /**
@@ -97,6 +102,13 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ability_ids = Bouncer::role()::find($id);
+        if(!empty($ability_ids)){
+            Abilities::whereIn('id',$ability_ids)->delete();
+            EntryForm::whereIn('ability_id',$ability_ids)->delete();
+            ExitForm::whereIn('ability_id',$ability_ids)->delete();
+        }
+        Roles::destroy($id);
+        return redirect()->intended('category');
     }
 }
