@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Employee;
 use App\Models\User;
 use App\Rules\Filetype;
 use Illuminate\Http\Request;
@@ -16,7 +16,14 @@ use Mail;
 class AdminController extends Controller
 {
     public function index() {
-    	return view('admin.dashboard');
+        $count=0;
+        $admin = Employee::select('*')
+        ->where('user_type', '=', 'admin')
+        ->get();
+        $users = Employee::select('*')
+        ->where('user_type', '=', 'user')
+        ->get();
+    	return view('admin.dashboard',['users'=>$users,'admin'=>$admin]);
     }
 
     public function add_user(Request $request) {
