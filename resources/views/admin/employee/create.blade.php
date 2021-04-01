@@ -50,6 +50,39 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="startdate">StartDate</label>
+                                <div class="form-control-wrap">
+                                <input data-provide="datepicker"  class="form-control" name="startdate" data-date-format="mm-dd-yyyy" placeholder="Select date"  value="{{ old('startdate') }}">
+                                @error('startdate')
+                                        <span class="invalid">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="department">Department</label>
+                                <div class="form-control-wrap">
+                                <input type="text" class="form-control" id="department" name="department" value="{{ old('department') }}">
+                                @error('department')
+                                        <span class="invalid">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="position">Position</label>
+                                <div class="form-control-wrap">
+                                <input type="text" class="form-control" id="position" name="position" value="{{ old('position') }}">
+                                @error('position')
+                                        <span class="invalid">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
                         
                         <div class="col-12">
                             <div class="form-group">
