@@ -54,7 +54,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="startdate">StartDate</label>
                                 <div class="form-control-wrap">
-                                <input data-provide="datepicker"  class="form-control" name="startdate" data-date-format="mm-dd-yyyy" placeholder="Select date"  value="{{ old('startdate') }}">
+                                <input data-provide="datepicker"  class="form-control" name="startdate" data-date-format="mm/dd/yyyy" placeholder="Select date"  value="{{ old('startdate') }}">
                                 @error('startdate')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror

@@ -53,13 +53,10 @@ class EmployeeController extends Controller
                 'position'=>'required'
             ]);
           
-         
-           
-            
-            $date1=  date("Y-m-d",strtotime($request['startdate']));
-      print_r($date1);
-    
-        exit(); 
+   
+
+             $date1=  date("Y/m/d",strtotime($request['startdate']));
+       
             $user = Employee::create([
 
                 'name'          => $request->name,
@@ -120,7 +117,7 @@ class EmployeeController extends Controller
             'department'=>'required',
             'position'=>'required'
         ]);
-        $date1=  date("Y-m-d",strtotime($request['startdate']));
+        $date1=  date("Y/m/d",strtotime($request['startdate']));
       
         $employee = Employee::find($id);
         $employee->update([
