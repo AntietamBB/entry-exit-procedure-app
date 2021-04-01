@@ -8,6 +8,8 @@
     .tb-tnx-action {
         text-align: center;
         min-width: 110px;
+        line-height: 24px;
+       
     }
 </style>
 <div class="nk-block-head nk-block-head-sm">
@@ -60,7 +62,7 @@
                             <th scope="col">Phone</th>
                             <th scope="col">Status</th>
                             <th scope="col">Created On</th>
-                            <th>Action</th>
+                            <th style="text-align: center;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,7 +74,7 @@
                             <td>{{$user->email}}</td>
                             <td>{{$user->phone}}</td>
                             <td>
-                                @if($user->status=="1");
+                                @if($user->status=="1")
 
                                 <span class="badge badge-dot badge-success">Active</span>
 
@@ -87,10 +89,12 @@
                             <td>{{ date('M d, Y', time()) }}</td>
                             <td class="tb-tnx-action">
                                 <a href="{{ url('employee/'.$user->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a><br>
+                                
                                 <a href="#" class="text-danger"><em class="icon ni ni-minus-circle-fill"></em><span>Exit</span></a><br>
                                 <form method="post" action="<?= url('employee/' . $user->id) ?>" id="employee_{{ $user->id }}">
                                     @method('DELETE')
                                     @csrf
+                                    
                                     <a onClick="deleteUser({{ $user->id }})" href="javascript:void(0)" rel="nofollow" class="text-danger"><em class="icon ni ni-trash"></em><span>Remove</span></a>
                                 </form>
 

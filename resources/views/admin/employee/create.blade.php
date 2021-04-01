@@ -54,7 +54,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="startdate">Start Date</label>
                                 <div class="form-control-wrap">
-                                <input data-provide="datepicker"  class="form-control" name="startdate" data-date-format="mm/dd/yyyy" placeholder="Select date"  value="{{ old('startdate') }}">
+                                <input data-provide="datepicker" id="startdate"  class="form-control" name="startdate" data-date-format="mm/dd/yyyy" placeholder="Select date"  value="{{ old('startdate') }}">
                                 @error('startdate')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
@@ -95,3 +95,12 @@
         </div>
     </div>
 @endsection
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('#startdate').datepicker({
+        
+        autoclose: true
+    });
+});
+</script>
