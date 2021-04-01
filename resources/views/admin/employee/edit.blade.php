@@ -52,7 +52,7 @@
                     </div>
                     <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="form-label" for="startdate">StartDate</label>
+                                <label class="form-label" for="startdate">Start Date</label>
                                 <div class="form-control-wrap">
                                 <input data-provide="datepicker" class="form-control" name="startdate" data-date-format="mm/dd/yyyy" placeholder="Select date"  value="{{old('startdate',date('m/d/Y', strtotime($employee->startdate)))}}">
                                 @error('startdate')
