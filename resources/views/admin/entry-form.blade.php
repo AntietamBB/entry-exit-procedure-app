@@ -4,7 +4,7 @@
 	<div class="nk-block-head nk-block-head-sm">
         <div class="nk-block-between">
             <div class="nk-block-head-content">
-                <h3 class="nk-block-title page-title">Employee Exit Form</h3>
+                <h3 class="nk-block-title page-title">Employee Entry Form</h3>
                 <div class="nk-block-des text-soft">
                     <!--<p>Lorem ipsum dolor, sit amet, consectetur adipisicing elit.</p>-->
                 </div>
@@ -20,10 +20,10 @@
                     <div class="row g-4">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="form-label" for="email-address">Name</label>
+                                <label class="form-label" for="name">Name</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="email-address" name="email" value="{{ $user->name }}">
-                                    @error('email')
+                                    <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}">
+                                    @error('name')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -31,10 +31,10 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="form-label" for="email-address">Start Date</label>
+                                <label class="form-label" for="startdate">Start Date</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="email-address" name="email" value="{{date('M d, Y')}}">
-                                    @error('email')
+                                <input data-provide="datepicker" data-date-format="mm/dd/yyyy" class="form-control" id="startdate" name="startdate" value="{{date('m/d/Y', strtotime($user->startdate))}}">
+                                    @error('startdate')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -44,14 +44,14 @@
                             <div class="form-group">
                                 <label class="form-label" for="email-address">Department</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="email-address" name="email" value="Department">
-                                    @error('email')
+                                    <input type="text" class="form-control" id="department" name="department" value="{{$user->department}}">
+                                    @error('department')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <!-- <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-label" for="email-address">Manager</label>
                                 <div class="form-control-wrap">
@@ -61,13 +61,13 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-label" for="email-address">Position</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="email-address" name="email" value="Position">
-                                    @error('email')
+                                    <input type="text" class="form-control" id="position" name="position" value="{{$user->position}}">
+                                    @error('position')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -77,8 +77,8 @@
                             <div class="form-group">
                                 <label class="form-label" for="email-address">Form Date</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="email-address" name="email" value="{{date('M d, Y')}}">
-                                    @error('email')
+                                    <input type="text" class="form-control" id="formdate" name="formdate" value="{{date('M d, Y')}}">
+                                    @error('formdate')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -90,7 +90,7 @@
                         </div>
                         <div class="col-lg-12">
                             @forelse($categories as $category)
-                                <label class="form-label" for="phone-no">{{ $category->title}}</label>
+                                <label class="form-label" for="category">{{ $category->title}}</label>
                                 @forelse($category->abilities as $ability)
                                 <div class="form-group">
                                     <div class="g">
@@ -129,8 +129,8 @@
                             <div class="form-group">
                                 <label class="form-label" for="email-address">Phone Ext</label>
                                 <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="email-address" name="email" value="+1{{ $user->phone }}">
-                                    @error('email')
+                                    <input type="text" class="form-control" id="phone" name="phone" value="+1{{ $user->phone }}">
+                                    @error('phone')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -148,3 +148,12 @@
         </div>
     </div>
 @endsection
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('#startdate').datepicker({
+        
+        autoclose: true
+    });
+});
+</script>

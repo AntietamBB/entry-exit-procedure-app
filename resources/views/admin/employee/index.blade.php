@@ -91,6 +91,8 @@
                                 <a href="{{ url('employee/'.$user->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a><br>
                                 
                                 <a href="#" class="text-danger"><em class="icon ni ni-minus-circle-fill"></em><span>Exit</span></a><br>
+                                <a href="{{url('entry-form/'.$user->id)}}" ><em class="icon ni ni-minus-circle-fill"></em><span>Entry form</span></a><br>
+                                <a href="{{url('exit-form/'.$user->id)}}" ><em class="icon ni ni-minus-circle-fill"></em><span>Exit Form</span></a><br>
                                 <form method="post" action="<?= url('employee/' . $user->id) ?>" id="employee_{{ $user->id }}">
                                     @method('DELETE')
                                     @csrf
