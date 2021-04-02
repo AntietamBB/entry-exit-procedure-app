@@ -5,6 +5,16 @@
         <div class="nk-block-between">
             <div class="nk-block-head-content">
                 <h3 class="nk-block-title page-title">Add Admin User</h3>
+                @if($message=Session::get('message'))
+                <div>
+                <p style="text-align:center;">{{$message}}</p>
+                </div>
+                @endif
+                @if($message=Session::get('error'))
+                <div>
+                <p style="text-align:center;">{{$message}}</p>
+                </div>
+               @endif
                 <div class="nk-block-des text-soft">
                     <!--<p>Lorem ipsum dolor, sit amet, consectetur adipisicing elit.</p>-->
                 </div>
