@@ -39,8 +39,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = \Silber\Bouncer\Database\Role::select(['id','name','title'])->orderBy('name')->get();
-        return view('admin.user.create',['roles' => $roles]);
+        $entry_categories = \Silber\Bouncer\Database\Role::where('level',1)->select(['id','name','title'])->orderBy('name')->get();
+        $exit_categories = \Silber\Bouncer\Database\Role::where('level',2)->select(['id','name','title'])->orderBy('name')->get();
+        return view('admin.user.create',['entry_categories' => $entry_categories,'exit_categories' => $exit_categories]);
     }
 
     /**
@@ -95,9 +96,10 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $categories = $user->getRoles()->toArray();
-        $roles = \Silber\Bouncer\Database\Role::select(['id','name','title'])->orderBy('name')->get();
+        $exit_categories = \Silber\Bouncer\Database\Role::where('level',2)->select(['id','name','title'])->orderBy('name')->get();
+        $entry_categories = \Silber\Bouncer\Database\Role::where('level',1)->select(['id','name','title'])->orderBy('name')->get();
 
-        return view('admin.user.edit', ['user' => $user,'categories' => $categories,'roles' => $roles]);
+        return view('admin.user.edit', ['user' => $user,'categories' => $categories,'exit_categories' => $exit_categories,'entry_categories' => $entry_categories]);
     }
 
     /**

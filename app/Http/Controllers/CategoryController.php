@@ -40,13 +40,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {        
-        // $validated = $request->validate([
-        //     'title' => 'required|unique',
-        // ]);
-
+        $validated = $request->validate([
+            'name' => 'required',
+            'category_form' => 'required'
+        ]);
+        $type = ($request->category_form == 1) ? 'entry_' : 'exit_';
+        
         $category = Bouncer::role()->firstOrCreate([
-            'name' => str_replace(' ', '_', strtolower($request->name)),
+            'name' => $type.str_replace(' ', '_', strtolower($request->name)),
             'title' => $request->name,
+            'level' => $request->category_form
         ]);
         
         return redirect()->intended('category');

@@ -52,9 +52,25 @@
                         </div>
 
                         <div class="col-lg-12" style="padding-bottom: 0px !important;">
-                            <label class="form-label" for="phone-no" style="margin-bottom:0px;">Abilities</label>
+                            <label class="form-label" for="phone-no" style="margin-bottom:0px;">Entry Form Abilities</label>
                         </div>
-                        @foreach($roles as $role)
+                        @foreach($entry_categories as $role)
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <div class="g">
+                                    <div class="custom-control custom-control-sm custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="category[]" value="{{ $role->name }}" id="{{ $role->name }}" {{ in_array($role->name, old('category', [])) ? 'checked' : '' }}>
+                                        <label class="custom-control-label" for="{{ $role->name }}">{{ $role->title }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+
+                        <div class="col-lg-12" style="padding-bottom: 0px !important;">
+                            <label class="form-label" for="phone-no" style="margin-bottom:0px;">Exit Form Abilities</label>
+                        </div>
+                        @foreach($exit_categories as $role)
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <div class="g">

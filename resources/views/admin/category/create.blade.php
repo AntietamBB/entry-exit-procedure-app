@@ -22,7 +22,22 @@
                                 <label class="form-label" for="full-name">Category Name</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
-									@error('title')
+									@error('name')
+                                        <span class="invalid">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="full-name">Category Form</label>
+                                <div class="form-control-wrap">
+                                    <select class="form-control" id="category_form" name="category_form" value="{{ old('category_form') }}">
+                                        <option value="">Select</option>
+                                        <option value="1">Entry Form</option>
+                                        <option value="2">Exit Form</option>
+                                    </select>
+                                    @error('category_form')
                                         <span class="invalid">{{ $message }}</span>
                                     @enderror
                                 </div>
