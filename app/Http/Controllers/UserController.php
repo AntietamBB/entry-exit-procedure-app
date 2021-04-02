@@ -70,10 +70,42 @@ class UserController extends Controller
             foreach($categories as $category){
                 $user->assign($category);
             }
+           
         }
+
+        $data = $request->all();
+        $subject = "Hi";
+      
+        $body = "Thank you for registering with Antietam Broadband as admin user.Your login credentials are
+        Username: " . $data['name'] . "<br>
+        Password: " . $password . "<br>
         
-        return redirect()->intended('user');
+        Antietam Broadband";
+        
+        try {
+            $headers = $this->set_headers();
+
+            mail($data['email'], $subject, $body, $headers);
+
+        } catch (Exception $e) {
+            echo 'Message: ' . $e->getMessage();
+        }
+
+        if (count(Mail::failures()) > 0) {
+            return redirect('user')->with('error', 'Error');
+        }
+        return redirect('user')->with('message', 'Mail has been succesfully sent');
     }
+
+    public function set_headers()
+    {
+        $headers = "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= "From: " . getenv('MAIL_FROM_NAME') . " <" . getenv('MAIL_FROM_ADDRESS') . ">";
+        return $headers;
+    }
+
+        
+      
 
     /**
      * Display the specified resource.
