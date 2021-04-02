@@ -50,7 +50,39 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="startdate">Start Date</label>
+                                <div class="form-control-wrap">
+                                <input data-provide="datepicker" id="startdate" class="form-control" name="startdate" data-date-format="mm/dd/yyyy" placeholder="Select date"  value="{{old('startdate',date('m/d/Y', strtotime($employee->startdate)))}}">
+                                @error('startdate')
+                                        <span class="invalid">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="department">Department</label>
+                                <div class="form-control-wrap">
+                                <input type="text" class="form-control" id="department" name="department" value="{{ old('department',$employee->department) }}">
+                                @error('department')
+                                        <span class="invalid">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="position">Position</label>
+                                <div class="form-control-wrap">
+                                <input type="text" class="form-control" id="position" name="position" value="{{ old('position',$employee->position) }}">
+                                @error('position')
+                                        <span class="invalid">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
                     <div class="col-12">
                         <div class="form-group">
                             <button type="submit" class="btn btn-lg btn-primary"><em class="icon ni ni-save"></em><span>Save</span></button></a>
@@ -62,3 +94,12 @@
     </div>
 </div>
 @endsection
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('#startdate').datepicker({
+       
+        autoclose: true
+    });
+});
+</script>

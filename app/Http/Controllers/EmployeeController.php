@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employee;
-
-
+use DateTime;
 class EmployeeController extends Controller
 {
     /**
@@ -40,22 +39,37 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+                  $data=$request->all();
+                  
+               
         if ($request->isMethod('post')) {
-
+         
             $validatedData = $request->validate([
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
                 'phone' => 'required|digits:10',
+                'startdate'=>'required',
+                'department'=>'required',
+                'position'=>'required'
             ]);
+          
+   
 
-
+             $date1=  date("Y/m/d",strtotime($request['startdate']));
+       
             $user = Employee::create([
+
                 'name'          => $request->name,
                 'email'         => $request->email,
                 'phone'         => $request->phone,
+                'startdate'     =>$date1,
+                'department'    =>$request->department,
+                'position'      =>$request->position,
                 'user_type'     => 'user',
-                'password' => 'password',
+                'password'      => 'password',
+               
             ]);
+        
             return redirect()->intended('employee');
         }
     }
@@ -98,13 +112,21 @@ class EmployeeController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
-            'phone' => 'required|digits:10'
+            'phone' => 'required|digits:10',
+            'startdate'=>'required',
+            'department'=>'required',
+            'position'=>'required'
         ]);
+        $date1=  date("Y/m/d",strtotime($request['startdate']));
+      
         $employee = Employee::find($id);
         $employee->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'startdate'     =>$date1,
+            'department'    =>$request->department,
+            'position'      =>$request->position,
         ]);
         return redirect()->intended('employee');
     }
