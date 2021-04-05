@@ -23,12 +23,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        /*if(Auth::user()->user_type != 'super_admin') {
-            $users = User::where('user_type', '<>', 'super_admin')->where('created_by', Auth::user()->id)->orderBy('id')->get();
-        } else {
-            $users = User::where('user_type', '<>', 'super_admin')->orderBy('id')->get();
-        }*/
-		$users = User::where('user_type','admin')->with('roles')->orderBy('id')->get();
+        $users = User::where('user_type','admin')->with('roles')->orderBy('id')->get();
+        
     	return view('admin.user.index', ['users' => $users]);
     }
 
@@ -41,6 +37,7 @@ class UserController extends Controller
     {
         $entry_categories = \Silber\Bouncer\Database\Role::where('form_type',1)->select(['id','name','title'])->orderBy('name')->get();
         $exit_categories = \Silber\Bouncer\Database\Role::where('form_type',2)->select(['id','name','title'])->orderBy('name')->get();
+
         return view('admin.user.create',['entry_categories' => $entry_categories,'exit_categories' => $exit_categories]);
     }
 
@@ -57,6 +54,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|digits:10'
         ]);
+
         $password =  Hash::make('password');
         $user = User::create([
             'user_type' => 'admin',
@@ -65,28 +63,28 @@ class UserController extends Controller
             'phone' => $request->phone,
             'password' => $password,
         ]);
+
         if(isset($request->category)){
             $categories = $request->category;
             foreach($categories as $category){
                 $user->assign($category);
             }
-           
         }
 
-        $data = $request->all();
-        $subject = "Hi";
+        $subject = "You are welcome!";
       
         $body = "Thank you for registering with Antietam Broadband as admin user.
-        <p>Your login credentials are</p>
-        Username: " . $data['name'] . "<br>
-        Password: " . Hash::make('password'). "<br>
+        <p>Your login credentials are,</p>
+        Username: " . $request->name . "<br>
+        Password: password<br>
         
+        Thanks<br>
         Antietam Broadband";
         
         try {
             $headers = $this->set_headers();
 
-            mail($data['email'], $subject, $body, $headers);
+            mail($request->email, $subject, $body, $headers);
 
         } catch (Exception $e) {
             echo 'Message: ' . $e->getMessage();

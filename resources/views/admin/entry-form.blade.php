@@ -1,6 +1,3 @@
-
-
-
 @extends('layouts.admin')
 
 @section('content')
@@ -18,10 +15,7 @@
     <div class="nk-block nk-block-lg">
         <div class="card card-bordered">
             <div class="card-inner">
-        
                 <form action="<?= url('entry-form-save/'.$employee->id) ?>" method="post">
-               
-              
                 	@csrf
                  
                     <div class="row g-4">
@@ -111,11 +105,11 @@
                                             <label class="custom-control-label" for="{{ $ability->name }}">{{ $ability->title }}</label>
                                         </div>
                                         @if($key !== false )
-                                            <div style="font-size:10px;margin-left:30px">
-                                                <i>{{ $employee_abilities[$key]['user']['name'] }} - {{ date('M d, Y',strtotime($ability->created_at))}}</i> 
-                                                
- <a href="" class="btn btn-success" id="ask"  data-toggle="modal" data-target="#modalLoginForm">Ask a Question</a>
-   
+                                            <div style="font-size:11px;margin-left:30px">
+                                                <i>
+													{{ $employee_abilities[$key]['user']['name'] }} - {{ date('M d, Y',strtotime($ability->created_at))}}
+													<a href="" class="ask_question" id="" data-ability-title="{{ $ability->title }}" data-ability-user-email="{{ $employee_abilities[$key]['user']['email'] }}" data-toggle="modal" data-target="#emailForm">Ask a Question</a>
+												</i>
                                             </div>
                                         @endif
                                     </div>
@@ -127,7 +121,6 @@
                                 <p> No Categories Found</p>
                             @endforelse
                         </div>
-                        
 
                         <div class="col-lg-12">
                         <hr>
@@ -161,135 +154,93 @@
                                 <button type="submit" class="btn btn-lg btn-primary"><em class="icon ni ni-save"></em><span>Save</span></button>
                             </div>
                         </div>
-
-
-                        
                     </div>
-
-                    
                 </form>
             </div>
         </div>
     </div>
 @endsection
 
-<div class="modal  fade"  id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Ask a Question</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <i class="fas fa-envelope prefix grey-text"></i>
-          <div style="text-align: center;" class="alert alert-success" id="success">
-     <p>Mail has been succesfully sent</p>
-          </div>
-          <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-          <input type="hidden" name="id" id="id"   value="{{$employee->id}}">
-          <label data-error="wrong" data-success="right" for="defaultForm-email">Email</label>
-          <input type="email" name="email" value="{{$employee_abilities[$key]['user']['email']}}" id="email" class="form-control validate">
-        
-        </div>
-      
-        <div class="md-form mb-4">
-          <i class="fas fa-lock prefix grey-text"></i>
-          
-          <label data-error="wrong" data-success="right" for="defaultForm-pass">Subject</label>
-          <input type="text"  name="subject"  id="subject" class="form-control validate">
-          
-        </div>
-
-        
-        <div class="md-form mb-4">
-          <i class="fas fa-lock prefix grey-text"></i>
-          <label data-error="wrong" data-success="right" for="defaultForm-pass">Message</label>
-          <textarea  name="message" id="message" class="form-control validate"></textarea>
-
-        </div>
-
-      </div>
-      <div class="modal-footer d-flex justify-content-center">
-      <button type="submit" id="send"  class="btn btn-success  ">Send</button>
-      </div>
-    
-     </div>
-    </div>
-  </div>
+	<div class="modal  fade" id="emailForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<h4 class="modal-title w-100 font-weight-bold">Ask a Question</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			
+				<div class="modal-body mx-3">
+					<div class="md-form mb-5">
+						<i class="fas fa-envelope prefix grey-text"></i>
+						<div style="text-align: center; display:none;" class="alert alert-success" id="success">
+							
+						</div>
+						
+						<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+						<input type="hidden" name="id" id="id" value="{{$employee->id}}">
+						<label data-error="wrong" data-success="right" for="defaultForm-email">Email</label>
+						<input type="email" name="email" value="" id="email" class="form-control validate">
+					</div>
+				
+					<div class="md-form mb-4">
+						<i class="fas fa-lock prefix grey-text"></i>
+						<label data-error="wrong" data-success="right" for="defaultForm-pass">Subject</label>
+						<input type="text" name="subject" id="subject" class="form-control validate">
+					</div>
+				
+					<div class="md-form mb-4">
+						<i class="fas fa-lock prefix grey-text"></i>
+						<label data-error="wrong" data-success="right" for="defaultForm-pass">Message</label>
+						<textarea  name="message" id="message" class="form-control validate"></textarea>
+					</div>
+				</div>
+				<div class="modal-footer d-flex justify-content-center">
+					<button type="submit" id="send" class="btn btn-success">Send</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-$(document).ready(function () {
-    $('#startdate').datepicker({
-        
-        autoclose: true
-    });
-});
-</script>
+	$(document).ready(function () {
+		$('#startdate').datepicker({
+			autoclose: true
+		});
+		
+		$('.ask_question').click(function(){
+			$("#success").hide();
+			
+			$("#subject").val($(this).data('ability-title'));
+			$("#email").val($(this).data('ability-user-email'));
+		});
 
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
- $(document).ready(function(){
-     $('#ask').click(function(){
-  var text="";
-  $('.custom-control-input:checked').each(function(){
-     text+=$(this).get(0).id+' ,';
-    
-    
-    
- });
- text=text.substring(0,text.length-1);
-  $("#subject").val(text);
- });
- });
- </script>
- 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- <script>
- $(document).ready(function(){
- $('#success').hide();
-$('#send').click(function(e){
-    event.preventDefault();
-    
-    var id = $('#id').val();
-
-    var email = $("#email").val();
-
-var subject = $("#subject").val();
-
-var message = $("#message").val();
-
-
-
-$.ajax({
-
-   type:'POST',
-
-   url:'/entry-form-email/'+ id,
-
-   data:{id:id,email:email, subject:subject, message:message,"_token": "{{ csrf_token() }}"},
-   
-   success:function(data){
-    $("#success").show();
-    
-
-   },
-   error: function() {
-          alert("There was an error. Try again please!");
-        }
-
-});
-
-return false;
-});
-});        
-
-
+		$('#send').click(function(e) {
+			var id = $('#id').val();
+			var email = $("#email").val();
+			var subject = $("#subject").val();
+			var message = $("#message").val();
+	
+			$.ajax({
+				type:'POST',
+				url:'/entry-form-email/'+ id,
+				data:{id:id,email:email, subject:subject, message:message,"_token": "{{ csrf_token() }}"},
+				success:function(data){
+					if(data == 'success') {
+						$("#success").html('<p>Mail has been succesfully sent</p>');
+					} else {
+						$("#success").html('<p>Something went wrong!</p>');
+					}
+				},
+				error: function() {
+					alert("There was an error. Try again please!");
+				}
+			});
+		
+			return false;
+		});
+	});
 </script>

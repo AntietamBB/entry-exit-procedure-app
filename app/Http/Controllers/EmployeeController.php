@@ -39,11 +39,7 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-                  $data=$request->all();
-                  
-               
-        if ($request->isMethod('post')) {
-         
+        if($request->isMethod('post')) {
             $validatedData = $request->validate([
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
@@ -52,22 +48,20 @@ class EmployeeController extends Controller
                 'department'=>'required',
                 'position'=>'required'
             ]);
+
             $password =  Hash::make('password');
    
-
-             $date1=  date("Y/m/d",strtotime($request['startdate']));
+            $date1=  date("Y/m/d",strtotime($request['startdate']));
        
             $user = Employee::create([
-
                 'name'          => $request->name,
                 'email'         => $request->email,
                 'phone'         => $request->phone,
-                'startdate'     =>$date1,
-                'department'    =>$request->department,
-                'position'      =>$request->position,
+                'startdate'     => $date1,
+                'department'    => $request->department,
+                'position'      => $request->position,
                 'user_type'     => 'user',
                 'password'      => $password,
-               
             ]);
         
             return redirect()->intended('employee');
@@ -93,8 +87,8 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-
         $employee = Employee::find($id);
+		
         return view('admin.employee.edit', ['employee' => $employee]);
     }
 
@@ -107,8 +101,6 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
@@ -117,9 +109,11 @@ class EmployeeController extends Controller
             'department'=>'required',
             'position'=>'required'
         ]);
+		
         $date1=  date("Y/m/d",strtotime($request['startdate']));
       
         $employee = Employee::find($id);
+		
         $employee->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -131,9 +125,6 @@ class EmployeeController extends Controller
         return redirect()->intended('employee');
     }
 
-
-
-
     /**
      * Remove the specified resource from storage.
      *
@@ -143,6 +134,7 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         Employee::destroy($id);
+		
         return redirect()->intended('employee');
     }
 }

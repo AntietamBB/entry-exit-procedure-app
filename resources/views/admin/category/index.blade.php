@@ -56,7 +56,7 @@
 									<td>@if($category->created_at) {{ date('M d, Y', strtotime($category->created_at)) }} @endif</td>
 									<td class="tb-tnx-action">
 										<a style="position: relative;top: 8px;" href="{{ url('category/'.$category->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span> Edit</span></a>
-										<a style="position: relative;top: 8px;"href="{{ url('category/'.$category->id.'/item') }}" style="margin-left: 10px;"><em class="icon ni ni-edit-alt"></em><span> View Items</span></a>
+										<a style="position: relative;top: 8px;"href="{{ url('category/'.$category->id.'/item') }}" style="margin-left: 10px;"><em class="icon ni ni-eye-fill"></em><span> View Items</span></a>
 										<form method="post" action="<?= url('category/'.$category->id) ?>" id="category_{{ $category->id }}" style="display:inline-block">
                                             @method('DELETE')
                                             @csrf

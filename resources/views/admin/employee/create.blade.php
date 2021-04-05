@@ -99,7 +99,6 @@
 <script>
 $(document).ready(function () {
     $('#startdate').datepicker({
-        
         autoclose: true
     });
 });

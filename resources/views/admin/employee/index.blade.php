@@ -12,16 +12,18 @@
        
     }
 </style>
+
 @if($message=Session::get('success'))
-                <div class="alert alert-success">
-                <p style="text-align:center;">{{$message}}</p>
-                </div>
-                @endif
-                @if($message=Session::get('error'))
-                <div class="alert alert-danger">
-                <p style="text-align:center;">{{$message}}</p>
-                </div>
-               @endif
+	<div class="alert alert-success">
+		<p style="text-align:center;">{{$message}}</p>
+	</div>
+@endif
+@if($message=Session::get('error'))
+	<div class="alert alert-danger">
+		<p style="text-align:center;">{{$message}}</p>
+	</div>
+@endif
+
 <div class="nk-block-head nk-block-head-sm">
     <div class="nk-block-between">
         <div class="nk-block-head-content">
@@ -31,8 +33,6 @@
             </div>
         </div>
        
-
-
         <div class="nk-block-head-content">
             <div class="toggle-wrap nk-block-tools-toggle">
                 <a class="btn btn-primary" href="{{ url('employee/create') }}" style="float:right"><em class="icon ni ni-plus"></em><span>Add Employee</span></a>
@@ -53,15 +53,17 @@
         </div>
     </div>
 </div>
+
 <div class="nk-block">
     @if (session('message'))
-    <div class="alert alert-pro alert-{{ session('alert_class') }} alert-dismissible">
-        <div class="alert-text">
-            <h6>{{ session('message') }}</h6>
-        </div>
-        <button class="close" data-dismiss="alert"></button>
-    </div>
+		<div class="alert alert-pro alert-{{ session('alert_class') }} alert-dismissible">
+			<div class="alert-text">
+				<h6>{{ session('message') }}</h6>
+			</div>
+			<button class="close" data-dismiss="alert"></button>
+		</div>
     @endif
+	
     <div class="card card-bordered card-stretch">
         <div class="card-inner-group">
             <div class="card card-bordered card-preview">
@@ -87,14 +89,9 @@
                             <td>{{$user->phone}}</td>
                             <td>
                                 @if($user->status=="1")
-
-                                <span class="badge badge-dot badge-success">Active</span>
-
-
+									<span class="badge badge-dot badge-success">Active</span>
                                 @else
-
-
-                                <span class="badge badge-dot badge-danger">Inactive</span>
+                                	<span class="badge badge-dot badge-danger">Inactive</span>
                                 @endif
                             </td>
 
@@ -111,12 +108,8 @@
                                     
                                     <a onClick="deleteUser({{ $user->id }})" href="javascript:void(0)" rel="nofollow" class="text-danger"><em class="icon ni ni-trash"></em><span>Remove</span></a>
                                 </form>
-
-
                             </td>
                         </tr>
-
-
                         @endforeach
                     </tbody>
                 </table>

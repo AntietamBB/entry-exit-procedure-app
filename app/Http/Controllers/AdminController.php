@@ -19,128 +19,10 @@ class AdminController extends Controller
 {
     public function index() {
         $count=0;
-        $admin = Employee::select('*')
-        ->where('user_type', '=', 'admin')
-        ->get();
-        $users = Employee::select('*')
-        ->where('user_type', '=', 'user')
-        ->get();
+        $admin = Employee::select('*')->where('user_type', '=', 'admin')->get();
+        $users = Employee::select('*')->where('user_type', '=', 'user')->get();
+		
     	return view('admin.dashboard',['users'=>$users,'admin'=>$admin]);
-    }
-
-    public function add_user(Request $request) {
-        if($request->isMethod('post')) {
-
-            // $validatedData = $request->validate([
-            //     'name' => 'required',
-            //     'email' => 'required|email|unique:users,email',
-            //     'user_type' => 'required'
-            // ]);
-			
-            // $token = $this->getToken();
-            // $user = User::create([
-            //     'name'          => $request->name,
-            //     'email'         => $request->email,
-            //     'phone'         => $request->phone,
-            //     'user_type'     => strtolower($request->user_type),
-            //     'token'         => $token,
-            //     'created_by'    => Auth::user()->id
-            // ]);
-
-            // if($user->id) {
-            //     $data = array('name'=> $request->name,'email'=> $request->email,'link' => $token);
-
-            //     Mail::send('email.mail', $data, function($message) use($data) {
-            //         $message->to($data['email']);
-            //         $message->subject('User Activation for Volkswagen');
-            //         $message->from(env('MAIL_USERNAME'), 'Volkswagen');
-            //     });
-                
-            //     $request->session()->flash('message', 'User added successfully.');
-            //     $request->session()->flash('alert_class', 'success');
-            // } else {
-            //     $request->session()->flash('message', 'Something went wrong, Please try again!');
-            //     $request->session()->flash('alert_class', 'danger');
-            // }
-
-            return redirect()->intended('manage-user');
-        }
-
-        return view('admin.add-user');
-    }
-
-    public function edit_user(Request $request, $id = null) {
-        $user = User::find($id);
-
-        // if(empty($user)) {
-        //     $request->session()->flash('message', 'Something went wrong, Please try again!');
-        //     $request->session()->flash('alert_class', 'danger');
-
-        //     return redirect()->intended('manage-user');
-        // }
-
-        // if($request->isMethod('post')) {
-        //     $validatedData = $request->validate([
-        //         'name' => 'required',
-        //         'email' => 'required|email|unique:users,email,'.$user->id,
-        //         'user_type' => 'required'
-        //     ]);
-
-        //     $user->name = $request->name;
-        //     $user->email = $request->email;
-        //     $user->phone = $request->phone;
-        //     $user->user_type = $request->user_type;
-
-        //     if($user->save()) {
-        //         $request->session()->flash('message', 'User updated successfully.');
-        //         $request->session()->flash('alert_class', 'success');
-        //     } else {
-        //         $request->session()->flash('message', 'Something went wrong, Please try again!');
-        //         $request->session()->flash('alert_class', 'danger');
-        //     }
-
-        //     return redirect()->intended('manage-user');
-        // }
-
-        return view('admin.edit-user', ['user' => $user]);
-    }
-
-    public function delete_user(Request $request, $id = null) {
-        
-        if($id == null) {
-            $request->session()->flash('message', 'Something went wrong, Please try again!');
-            $request->session()->flash('alert_class', 'danger');
-            
-            return redirect()->intended('manage-user');
-        }
-
-        $user = User::find($id);
-
-        if(!empty($user) && $user->delete()) {
-            $request->session()->flash('message', 'User deleted successfully.');
-            $request->session()->flash('alert_class', 'success');
-        } else {
-            $request->session()->flash('message', 'Something went wrong, Please try again!');
-            $request->session()->flash('alert_class', 'danger');
-        }
-
-        return redirect()->intended('manage-user');
-    }
-
-    public function manage_employees() {
-    	return view('admin.manage-employees', []);
-    }
-
-    public function add_employee(Request $request) {
-        if($request->isMethod('post')) {
-            return redirect()->intended('manage-employees');
-        }
-        
-        return view('admin.add-employee', []);
-    }
-
-    public function edit_employee(Request $request, $id = null) {
-        return view('admin.edit-employee', []);
     }
 
     public function entry_form(Request $request, $id = null) {
@@ -150,6 +32,7 @@ class AdminController extends Controller
         $entry_categories = \Silber\Bouncer\Database\Role::where('form_type',1)->with('abilities')->orderBy('name')->get();
         $employee_abilities = EntryForm::where('employee_id',$id)->with('user')->get()->toArray();
         $user_categories = $user->getRoles()->toArray();
+
         return view('admin.entry-form', [
             'categories' => $entry_categories,
             'user_categories' => $user_categories,
@@ -201,45 +84,36 @@ class AdminController extends Controller
         }
         return redirect()->intended("entry-form/$id");
     }
+	
     public function entry_form_email(Request $request,  $id=NULL)
     {
-        
-       
-        $id=$request->get('id');
-        
-        $data=$request->all();
-         
-        $email=$request->input('email');
-      
-        $subject=$request->input('subject');
-        
-        $message=$request->input('message');
- 
-  
-  
-  $headers = $this->set_headers();
+        $id = $request->get('id');
+        $email = $request->input('email');
+        $subject = $request->input('subject');
+        $message = $request->input('message');
 
-   mail($data['email'], $subject, $message, $headers);
-   try {
-     $headers = $this->set_headers();
-   }
- catch (Exception $e) {
-   echo 'Message: ' . $e->getMessage();
- }
- if (count(Mail::failures()) > 0) {
-    echo "failure";
- }
-echo "success";
- }
- 
+		$headers = $this->set_headers();
+		
+		try {
+			mail($email, $subject, $message, $headers);
+		}
+		catch (Exception $e) {
+			echo 'Message: ' . $e->getMessage();
+		}
+		if(count(Mail::failures()) > 0) {
+			echo "failure";
+		}
+		
+		echo "success";
+	}
 
-      
     public function set_headers()
     {
         $headers = "Content-type:text/html;charset=UTF-8" . "\r\n";
         $headers .= "From: " . getenv('MAIL_FROM_NAME') . " <" . getenv('MAIL_FROM_ADDRESS') . ">";
         return $headers;
     }
+	
     public function exit_form(Request $request, $id = null) {
         $user_id = Auth::id();
         $user = User::find($user_id);
@@ -255,6 +129,7 @@ echo "success";
             'employee' => $employee
         ]);
     }
+	
     public function exit_form_save(Request $request, $id = null){
         $user_id = Auth::id();
         $user = User::where('id',$user_id)->first();
@@ -307,7 +182,6 @@ echo "success";
     }
 	
 	public function change_password(Request $request) {
-
         if($request->isMethod('post')) {
 
             $validatedData = $request->validate([
@@ -334,7 +208,6 @@ echo "success";
     }
 
     public function update_profile(Request $request) {
-
         if($request->isMethod('post')) {
 
             $validatedData = $request->validate([
