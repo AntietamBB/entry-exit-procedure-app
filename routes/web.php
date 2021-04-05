@@ -68,7 +68,7 @@ Route::match(['get', 'post'], 'entry-form-save/{id?}', [AdminController::class, 
 Route::match(['get', 'post'], 'exit-form/{id?}', [AdminController::class, 'exit_form'])->middleware('admin');
 
 Route::match(['get', 'post'], 'exit-form-save/{id?}', [AdminController::class, 'exit_form_save'])->middleware('admin');
-
+Route::match(['get', 'post'], 'entry-form-email/{id?}', [AdminController::class, 'entry_form_email'])->middleware('admin');
 Route::resource('user', UserController::class)->middleware('admin');
 Route::resource('category', CategoryController::class)->middleware('admin');
 Route::resource('category.item', CategoryItemController::class)->middleware('admin');

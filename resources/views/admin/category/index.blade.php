@@ -4,6 +4,7 @@
 .tb-tnx-action {
     text-align:center;
     min-width: 250px;
+ 
 }
 </style>
     <div class="nk-block-head nk-block-head-sm">
@@ -54,12 +55,12 @@
 									<td>{{ ($category->form_type == 1) ? 'Entry Form' : 'Exit Form' }}</td>
 									<td>@if($category->created_at) {{ date('M d, Y', strtotime($category->created_at)) }} @endif</td>
 									<td class="tb-tnx-action">
-										<a href="{{ url('category/'.$category->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span> Edit</span></a>
-										<a href="{{ url('category/'.$category->id.'/item') }}" style="margin-left: 10px;"><em class="icon ni ni-edit-alt"></em><span> View Items</span></a>
+										<a style="position: relative;top: 8px;" href="{{ url('category/'.$category->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span> Edit</span></a>
+										<a style="position: relative;top: 8px;"href="{{ url('category/'.$category->id.'/item') }}" style="margin-left: 10px;"><em class="icon ni ni-edit-alt"></em><span> View Items</span></a>
 										<form method="post" action="<?= url('category/'.$category->id) ?>" id="category_{{ $category->id }}" style="display:inline-block">
                                             @method('DELETE')
                                             @csrf
-                                            <a onClick="deleteCategory({{ $category->id }})" href="javascript:void(0)" rel="nofollow" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span>Remove</span></a>
+                                            <a style="position: relative;top: 8px;"onClick="deleteCategory({{ $category->id }})" href="javascript:void(0)" rel="nofollow" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span>Remove</span></a>
                                         </form>
 									</td>
 									</td>

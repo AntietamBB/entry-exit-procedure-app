@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employee;
-use DateTime;
+use Illuminate\Support\Facades\Hash;
 class EmployeeController extends Controller
 {
     /**
@@ -52,7 +52,7 @@ class EmployeeController extends Controller
                 'department'=>'required',
                 'position'=>'required'
             ]);
-          
+            $password =  Hash::make('password');
    
 
              $date1=  date("Y/m/d",strtotime($request['startdate']));
@@ -66,7 +66,7 @@ class EmployeeController extends Controller
                 'department'    =>$request->department,
                 'position'      =>$request->position,
                 'user_type'     => 'user',
-                'password'      => 'password',
+                'password'      => $password,
                
             ]);
         

@@ -6,7 +6,7 @@
 	<meta name="description" content="@@page-discription">
 	<link rel="icon" href="images/favicon-32x32.png" type="image/x-icon">
 	<title>Antietam Broadband</title>
-    
+    <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.min.css')}}" />
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/dashlite.css') }}" >
     <link rel="stylesheet" type="text/css" href="{{ asset('css/theme.css') }}" >
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}" >

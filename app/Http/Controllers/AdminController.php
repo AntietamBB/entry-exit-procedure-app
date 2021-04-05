@@ -201,7 +201,45 @@ class AdminController extends Controller
         }
         return redirect()->intended("entry-form/$id");
     }
+    public function entry_form_email(Request $request,  $id=NULL)
+    {
+        
+       
+        $id=$request->get('id');
+        
+        $data=$request->all();
+         
+        $email=$request->input('email');
+      
+        $subject=$request->input('subject');
+        
+        $message=$request->input('message');
+ 
+  
+  
+  $headers = $this->set_headers();
 
+   mail($data['email'], $subject, $message, $headers);
+   try {
+     $headers = $this->set_headers();
+   }
+ catch (Exception $e) {
+   echo 'Message: ' . $e->getMessage();
+ }
+ if (count(Mail::failures()) > 0) {
+    echo "failure";
+ }
+echo "success";
+ }
+ 
+
+      
+    public function set_headers()
+    {
+        $headers = "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= "From: " . getenv('MAIL_FROM_NAME') . " <" . getenv('MAIL_FROM_ADDRESS') . ">";
+        return $headers;
+    }
     public function exit_form(Request $request, $id = null) {
         $user_id = Auth::id();
         $user = User::find($user_id);

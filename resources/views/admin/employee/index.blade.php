@@ -12,6 +12,16 @@
        
     }
 </style>
+@if($message=Session::get('success'))
+                <div class="alert alert-success">
+                <p style="text-align:center;">{{$message}}</p>
+                </div>
+                @endif
+                @if($message=Session::get('error'))
+                <div class="alert alert-danger">
+                <p style="text-align:center;">{{$message}}</p>
+                </div>
+               @endif
 <div class="nk-block-head nk-block-head-sm">
     <div class="nk-block-between">
         <div class="nk-block-head-content">
@@ -20,6 +30,8 @@
                 <!--<p>Lorem ipsum dolor, sit amet, consectetur adipisicing elit.</p>-->
             </div>
         </div>
+       
+
 
         <div class="nk-block-head-content">
             <div class="toggle-wrap nk-block-tools-toggle">
@@ -91,7 +103,7 @@
                                 <a href="{{ url('employee/'.$user->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a><br>
                                 
                                 <a href="#" class="text-danger"><em class="icon ni ni-minus-circle-fill"></em><span>Exit</span></a><br>
-                                <a href="{{url('entry-form/'.$user->id)}}" ><em class="icon ni ni-minus-circle-fill"></em><span>Entry form</span></a><br>
+                                <a href="{{url('entry-form/'.$user->id)}}" ><em class="icon ni ni-minus-circle-fill"></em><span>Entry Form</span></a><br>
                                 <a href="{{url('exit-form/'.$user->id)}}" ><em class="icon ni ni-minus-circle-fill"></em><span>Exit Form</span></a><br>
                                 <form method="post" action="<?= url('employee/' . $user->id) ?>" id="employee_{{ $user->id }}">
                                     @method('DELETE')

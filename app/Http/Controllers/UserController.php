@@ -76,9 +76,10 @@ class UserController extends Controller
         $data = $request->all();
         $subject = "Hi";
       
-        $body = "Thank you for registering with Antietam Broadband as admin user.Your login credentials are
+        $body = "Thank you for registering with Antietam Broadband as admin user.
+        <p>Your login credentials are</p>
         Username: " . $data['name'] . "<br>
-        Password: " . $password . "<br>
+        Password: " . Hash::make('password'). "<br>
         
         Antietam Broadband";
         
@@ -94,7 +95,7 @@ class UserController extends Controller
         if (count(Mail::failures()) > 0) {
             return redirect('user')->with('error', 'Error');
         }
-        return redirect('user')->with('message', 'Mail has been succesfully sent');
+        return redirect('user')->with('message', 'Admin user has been succesfully registered');
     }
 
     public function set_headers()

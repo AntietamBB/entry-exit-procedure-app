@@ -10,6 +10,9 @@
         <div class="nk-block-between">
             <div class="nk-block-head-content">
                 <h3 class="nk-block-title page-title">Manage Admin Users</h3>
+
+
+              
                 <div class="nk-block-des text-soft">
                     <!--<p>Lorem ipsum dolor, sit amet, consectetur adipisicing elit.</p>-->
                 </div>
@@ -25,7 +28,7 @@
         @if (session('message'))
             <div class="alert alert-pro alert-{{ session('alert_class') }} alert-dismissible">
                 <div class="alert-text">
-                    <h6>{{ session('message') }}</h6>
+                    <h6 style="text-align:center;">{{ session('message') }}</h6>
                 </div>
                 <button class="close" data-dismiss="alert"></button>
             </div>
@@ -106,11 +109,11 @@
 										@endif
                                     </td> -->
                                     <td>
-                                        <a href="{{ url('user/'.$user->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a>
+                                        <a style="position:relative;top:7px;" href="{{ url('user/'.$user->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a>
                                         <form method="post" action="<?= url('user/'.$user->id) ?>" id="user_{{ $user->id }}" style="display:inline-block">
                                             @method('DELETE')
                                             @csrf
-                                            <a onClick="deleteUser({{ $user->id }})" href="javascript:void(0)" rel="nofollow" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span>Remove</span></a>
+                                            <a style="position:relative;top:7px;"onClick="deleteUser({{ $user->id }})" href="javascript:void(0)" rel="nofollow" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span>Remove</span></a>
                                         </form>
                                     </td>
                                 </tr>
