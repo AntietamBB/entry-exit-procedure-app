@@ -101,9 +101,7 @@ $(document).ready(function () {
     $('#startdate').datepicker({
         autoclose: true
     });
-    $('#enddate').datepicker({
-        autoclose: true
-});
+   
 });
 </script>
 @endsection

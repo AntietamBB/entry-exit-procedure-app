@@ -65,11 +65,13 @@
                             <div class="form-group">
                                 <label class="form-label" for="exitdate">Exit Date</label>
                                 <div class="form-control-wrap">
-                                @if($employee->exitdate!=NULL)
-                                <input data-provide="datepicker" id="exitdate"  class="form-control" name="exitdate" data-date-format="mm/dd/yyyy" placeholder="Select date"  value="{{ old('exitdate',date('m/d/Y', strtotime($employee->exitdate)))}}">
-                             @else
-                             <input data-provide="datepicker" id="exitdate"  class="form-control" name="exitdate" data-date-format="mm/dd/yyyy"  placeholder="Select date">
-                             @endif
+                              
+                                
+                                <input data-provide="datepicker" id="exitdate"  class="form-control" name="exitdate" data-date-format="mm/dd/yyyy" placeholder="Select date" value="{{($employee->exitdate ? date('m/d/Y', strtotime($employee->exitdate)):'')}}">
+                             
+                      
+                          
+                           
                                 </div>
                                
                             </div>
