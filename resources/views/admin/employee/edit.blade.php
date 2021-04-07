@@ -63,6 +63,21 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
+                                <label class="form-label" for="exitdate">Exit Date</label>
+                                <div class="form-control-wrap">
+                                @if($employee->exitdate!=NULL)
+                                <input data-provide="datepicker" id="exitdate"  class="form-control" name="exitdate" data-date-format="mm/dd/yyyy" placeholder="Select date"  value="{{ old('exitdate',date('m/d/Y', strtotime($employee->exitdate)))}}">
+                             @else
+                             <input data-provide="datepicker" id="exitdate"  class="form-control" name="exitdate" data-date-format="mm/dd/yyyy"  placeholder="Select date">
+                             @endif
+                                </div>
+                               
+                            </div>
+                        
+                        </div>
+                     
+                        <div class="col-lg-6">
+                            <div class="form-group">
                                 <label class="form-label" for="department">Department</label>
                                 <div class="form-control-wrap">
                                 <input type="text" class="form-control" id="department" name="department" value="{{ old('department',$employee->department) }}">
@@ -93,11 +108,14 @@
         </div>
     </div>
 </div>
-@endsection
 <script>
 $(document).ready(function () {
     $('#startdate').datepicker({
         autoclose: true
     });
+    $('#exitdate').datepicker({
+        autoclose: true
+    });
 });
 </script>
+@endsection

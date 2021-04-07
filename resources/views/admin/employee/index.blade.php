@@ -88,7 +88,7 @@
                             <td>{{$user->email}}</td>
                             <td>{{$user->phone}}</td>
                             <td>
-                                @if($user->status=="1")
+                                @if($user->exitdate==NULL)
 									<span class="badge badge-dot badge-success">Active</span>
                                 @else
                                 	<span class="badge badge-dot badge-danger">Inactive</span>
@@ -99,8 +99,8 @@
                             <td class="tb-tnx-action">
                                 <a href="{{ url('employee/'.$user->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a><br>
                                 
-                                <a href="#" class="text-danger"><em class="icon ni ni-minus-circle-fill"></em><span>Exit</span></a><br>
-                                @if($user->status=="1")
+                              
+                                @if($user->exitdate==NULL)
                                 <a href="{{url('entry-form/'.$user->id)}}" ><em class="icon ni ni-minus-circle-fill"></em><span>Entry Form</span></a><br>
                                 @else
                                 <a href="{{url('exit-form/'.$user->id)}}" ><em class="icon ni ni-minus-circle-fill"></em><span>Exit Form</span></a><br>

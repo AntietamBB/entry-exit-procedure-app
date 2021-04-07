@@ -51,19 +51,20 @@ class EmployeeController extends Controller
 
             $password =  Hash::make('password');
    
-            $date1=  date("Y/m/d",strtotime($request['startdate']));
-       
+            $startdate =  date("Y/m/d",strtotime($request['startdate']));
+          
             $user = Employee::create([
                 'name'          => $request->name,
                 'email'         => $request->email,
                 'phone'         => $request->phone,
-                'startdate'     => $date1,
+                'startdate'     => $startdate,
+                'exitdate'       => NULL,
                 'department'    => $request->department,
                 'position'      => $request->position,
                 'user_type'     => 'user',
                 'password'      => $password,
             ]);
-        
+       
             return redirect()->intended('employee');
         }
     }
@@ -110,21 +111,34 @@ class EmployeeController extends Controller
             'position'=>'required'
         ]);
 		
-        $date1=  date("Y/m/d",strtotime($request['startdate']));
-      
-        $employee = Employee::find($id);
-		
+        $startdate=  date("Y/m/d",strtotime($request['startdate']));
+   
+       $employee = Employee::find($id);
+        if(isset($request['exitdate']) && $request['exitdate'] !="")
+        {
+            $exitdate=  date("Y/m/d",strtotime($request['exitdate']));
+        }
+        else {
+            $exitdate = NULL;
+         
+       }
+     
+       
+
         $employee->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'startdate'     =>$date1,
+            'startdate'     =>$startdate,
+            'exitdate'       =>$exitdate,
             'department'    =>$request->department,
             'position'      =>$request->position,
         ]);
+      
+        
         return redirect()->intended('employee');
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *

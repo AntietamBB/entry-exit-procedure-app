@@ -61,6 +61,8 @@
                                 </div>
                             </div>
                         </div>
+                       
+                        
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="form-label" for="department">Department</label>
@@ -94,12 +96,15 @@
             </div>
         </div>
     </div>
-@endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
+    <script>
 $(document).ready(function () {
     $('#startdate').datepicker({
         autoclose: true
     });
+    $('#enddate').datepicker({
+        autoclose: true
+});
 });
 </script>
+@endsection
+
