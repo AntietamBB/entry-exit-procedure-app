@@ -14,7 +14,7 @@ class AddEnddateToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->date('endate')->after('startdate')->nullable()->change();
+            $table->date('enddate')->after('startdate')->nullable()->change();
         });
     }
 
