@@ -35,13 +35,16 @@ class AdminController extends Controller
         $entry_categories = \Silber\Bouncer\Database\Role::where('form_type', 1)->with('abilities')->orderBy('name')->get();
         $employee_abilities = EntryForm::where('employee_id', $id)->with('user')->get()->toArray();
         $user_categories = $user->getRoles()->toArray();
-
+        $adminlist=User::select('*')
+        ->where('user_type', '=', 'admin')->where('id', '!=',Auth::id())
+        ->get();
         return view('admin.entry-form', [
             'categories' => $entry_categories,
             'user_categories' => $user_categories,
             'employee_abilities' => $employee_abilities,
             'user' => $user,
             'employee' => $employee,
+            'adminlist'=>$adminlist,
         ]);
     }
 
@@ -88,36 +91,48 @@ class AdminController extends Controller
 
     public function entry_form_email(Request $request,  $id = NULL)
     {
+       
         $id = $request->get('id');
         $email = $request->input('email');
+      
+        $to=$request->input('to');
+        
+        
         $subject = $request->input('subject');
+      
         $message = $request->input('message');
 
         $headers = $this->set_headers();
-
+      
+         
+        
+       
         try {
-            mail($email, $subject, $message, $headers);
-        } catch (Exception $e) {
+            mail($email,$to[0], $subject, $message, $headers);
+        } 
+        catch (Exception $e) {
             echo 'Message: ' . $e->getMessage();
         }
         if (count(Mail::failures()) > 0) {
             echo "failure";
         }
-
+    
         echo "success";
     }
+
+    
     public function exit_form_email(Request $request,  $id = NULL)
     {
         $id = $request->get('id');
         $email = $request->input('email');
-
+        $to=$request->input('to');
         $subject = $request->input('subject');
         $message = $request->input('message');
 
         $headers = $this->set_headers();
 
         try {
-            mail($email, $subject, $message, $headers);
+            mail($email,$to[0], $subject, $message, $headers);
         } catch (Exception $e) {
             echo 'Message: ' . $e->getMessage();
         }
@@ -144,12 +159,16 @@ class AdminController extends Controller
         $entry_categories = \Silber\Bouncer\Database\Role::where('form_type', 2)->with('abilities')->orderBy('name')->get();
         $employee_abilities = ExitForm::where('employee_id', $id)->with('user')->get()->toArray();
         $user_categories = $user->getRoles()->toArray();
+        $adminlist=User::select('*')
+        ->where('user_type', '=', 'admin')->where('id', '!=',Auth::id())
+        ->get();
         return view('admin.exit-form', [
             'categories' => $entry_categories,
             'user_categories' => $user_categories,
             'employee_abilities' => $employee_abilities,
             'user' => $user,
-            'employee' => $employee
+            'employee' => $employee,
+            'adminlist'=>$adminlist
         ]);
     }
 

@@ -4,13 +4,25 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 	<meta name="description" content="@@page-discription">
-	<link rel="icon" href="/images/favicon-32x32.png" type="image/x-icon">
+	<link rel="shortcut icon" href='/images/favicon-32x32.png' type="image/x-icon">
 	<title>Antietam Broadband</title>
     <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.min.css')}}" />
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/dashlite.css') }}" >
     <link rel="stylesheet" type="text/css" href="{{ asset('css/theme.css') }}" >
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}" >
+    <link rel="stylesheet" type="text/css" href="{{ asset('js/bootstrap.min.js') }}" >
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+
+
+
+
+
+
+
+
+
 </head>
 
 <style>
@@ -19,6 +31,7 @@
         background-color: #bb6d68;
         border-color: #bb6d68;
     }
+
 </style>
 
 <body class="nk-body bg-lighter npc-general has-sidebar">
@@ -79,8 +92,8 @@
                             </div>
                             <div class="nk-header-brand d-xl-none">
                                 <a href="<?= url('dashboard') ?>" class="logo-link">
-                                    <img class="logo-light logo-img" src="./images/logo.jpg" srcset="./images/logo.jpg 2x" alt="logo">
-                                    <img class="logo-dark logo-img" src="./images/logo.jpg" srcset="./images/logo.jpg 2x" alt="logo-dark">
+                                    <img class="logo-light logo-img" src="/images/logo.jpg" srcset="./images/logo.jpg 2x" alt="logo">
+                                    <img class="logo-dark logo-img" src="/images/logo.jpg" srcset="./images/logo.jpg 2x" alt="logo-dark">
                                 </a>
                             </div>
                             <div class="nk-header-tools">
@@ -159,9 +172,12 @@
             </div>
 		</div>
 	</div>
-    
-	<script src="{{ asset('js/bundle.js?ver=1.4.0') }}"></script>
+  
+	<script src="{{ asset('js/bundle.js?ver=1.4.0') }}"></script> 
     <script src="{{ asset('js/scripts.js?ver=1.4.0') }}"></script>
     <script src="{{ asset('js/charts/gd-general.js?ver=1.4.0') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+
 </body>
 </html>

@@ -107,7 +107,7 @@
                                 <div style="font-size:11px;margin-left:30px">
                                     <i>
                                         {{ $employee_abilities[$key]['user']['name'] }} - {{ date('M d, Y',strtotime($ability->created_at))}}
-                                        <a href="" class="ask_question" id="" data-ability-title="{{ $ability->title }}" data-ability-user-email="{{ $employee_abilities[$key]['user']['email'] }}" data-toggle="modal" data-target="#emailForm">Ask a Question</a>
+                                        <a href="" class="ask_question" id="" data-ability-title="{{ $employee_abilities[$key]['user']['name'] }}-{{ $ability->title }}"  data-ability-user-email="{{ $employee_abilities[$key]['user']['email'] }}"  data-toggle="modal" data-target="#emailForm">Ask a Question</a>
                                     </i>
                                 </div>
                                 @endif
@@ -158,53 +158,6 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        $('#startdate').datepicker({
-            autoclose: true
-        });
-
-        $('.ask_question').click(function() {
-            $("#success").hide();
-            $('#danger').hide();
-
-            $("#subject").val($(this).data('ability-title'));
-            $("#email").val($(this).data('ability-user-email'));
-        });
-
-        $('#send').click(function(e) {
-            var id = $('#id').val();
-            var email = $("#email").val();
-            var subject = $("#subject").val();
-            var message = $("#message").val();
-
-            $.ajax({
-                type: 'POST',
-                url: '/entry-form-email/' + id,
-                data: {
-                    id: id,
-                    email: email,
-                    subject: subject,
-                    message: message,
-                    "_token": "{{ csrf_token() }}"
-                },
-                success: function(data) {
-                    if (data == 'success') {
-                        $("#success").show();
-                    } else {
-                        $("#danger").show();
-                    }
-                },
-                error: function() {
-                    alert("There was an error. Try again please!");
-                }
-            });
-
-            return false;
-        });
-    });
-</script>
-@endsection
 
 <div class="modal  fade" id="emailForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -229,19 +182,36 @@
                     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                     <input type="hidden" name="id" id="id" value="{{$employee->id}}">
                     <label data-error="wrong" data-success="right" for="defaultForm-email">Email</label>
-                    <input type="email" name="email" value="" id="email" class="form-control validate">
+                    <input type="email" name="email" value="" id="email" class="form-control">
                 </div>
+          
+                
+                <div class="md-form mb-4">
+                
+                <i class="fas fa-lock prefix grey-text"></i> 
+                    <label data-error="wrong" data-success="right" for="defaultForm-pass">To</label>
+                    <div class="form-group">
+                <select class="selectpicker form-control "  data-style="btn-default"   name="to[]" multiple id="to">
 
+                @foreach ($adminlist as $admin)
+              <option value="{{$admin->name}} <{{$admin->email}}>">{{$admin->name}} < {{$admin->email}} ></option>
+              @endforeach
+                 </select>
+                    </div>
+           
+                </div>
                 <div class="md-form mb-4">
                     <i class="fas fa-lock prefix grey-text"></i>
                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Subject</label>
-                    <input type="text" name="subject" id="subject" class="form-control validate">
+                    <input type="text" name="subject" id="subject" class="form-control ">
                 </div>
-
+               
+               
+               
                 <div class="md-form mb-4">
                     <i class="fas fa-lock prefix grey-text"></i>
                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Message</label>
-                    <textarea name="message" id="message" class="form-control validate"></textarea>
+                    <textarea name="message" id="message" class="form-control "></textarea>
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-center">
@@ -251,3 +221,68 @@
     </div>
 </div>
 </div>
+<script>
+
+
+    $(document).ready(function() {
+     
+        $('select').selectpicker();
+        $('#startdate').datepicker({
+            autoclose: true
+        });
+  
+});
+        $('.ask_question').click(function() {
+            $("#success").hide();
+            $('#danger').hide();
+ 
+         $("#subject").val($(this).data('ability-title'));
+           $("#email").val($(this).data('ability-user-email'));
+        });
+
+        $('#send').click(function(e) {
+            var id = $('#id').val();
+            var email = $("#email").val();
+          
+            var to=$('#to').val();
+     
+            var subject = $("#subject").val();
+          
+            var message = $("#message").val();
+            
+            $.ajax({
+                type: 'POST',
+                url: '/entry-form-email/' + id,
+                data: {
+                    id: id,
+                    email: email,
+                    to:to,
+                    subject: subject,
+                    message: message,
+                    "_token": "{{ csrf_token() }}"
+            
+                },
+                
+                success: function(data) {
+                   
+                   
+                    if (data == 'success') {
+                       
+                        $("#success").show();
+                    } else {
+                        $("#danger").show();
+                    }
+                },
+                error: function() {
+                    alert("There was an error. Try again please!");
+                }
+            });
+
+            return false;
+        });
+
+
+             
+    
+</script>
+@endsection
