@@ -104,15 +104,12 @@ class AdminController extends Controller
 
         $headers = $this->set_headers();
       
-         
-        
+        foreach($to as $tos)
+        {
+         mail($email,$tos, $subject, $message, $headers);
        
-        try {
-            mail($email,$to[0], $subject, $message, $headers);
-        } 
-        catch (Exception $e) {
-            echo 'Message: ' . $e->getMessage();
         }
+        
         if (count(Mail::failures()) > 0) {
             echo "failure";
         }
@@ -122,27 +119,29 @@ class AdminController extends Controller
 
     
     public function exit_form_email(Request $request,  $id = NULL)
-    {
-        $id = $request->get('id');
+    {    $id = $request->get('id');
         $email = $request->input('email');
-        $to=$request->input('to');
+       $to=$request->input('to');
+    
         $subject = $request->input('subject');
         $message = $request->input('message');
 
         $headers = $this->set_headers();
 
-        try {
-            mail($email,$to[0], $subject, $message, $headers);
-        } catch (Exception $e) {
-            echo 'Message: ' . $e->getMessage();
-        }
+         foreach($to as $tos)
+         {
+          mail($email,$tos, $subject, $message, $headers);
+        
+         }
+    
         if (count(Mail::failures()) > 0) {
             echo "failure";
+          
         }
-
+    
         echo "success";
     }
-
+    
 
     public function set_headers()
     {
