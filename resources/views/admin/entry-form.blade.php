@@ -22,35 +22,23 @@
                 <div class="row g-4">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="name">Name</label>
-                            <div class="form-control-wrap">
-                                <input type="text" class="form-control" id="name" name="name" value="{{ $employee->name }}">
-                                @error('email')
-                                <span class="invalid">{{ $message }}</span>
-                                @enderror
-                            </div>
+                            <label class="form-label" for="name">Name :</label>
+                            <span id="name">{{ $employee->name }}</span>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="startdate">Start Date</label>
-                            <div class="form-control-wrap">
-                                <input data-provide="datepicker" data-date-format="mm/dd/yyyy" class="form-control" id="startdate" name="startdate" value="{{date('m/d/Y', strtotime($employee->startdate))}}">
-                                @error('startdate')
-                                <span class="invalid">{{ $message }}</span>
-                                @enderror
-                            </div>
+                            <label class="form-label" for="startdate">Start Date :</label>
+                            <span id="startdate">                 
+                            {{date('m/d/Y', strtotime($employee->startdate))}}
+                            </span>
                         </div>
                     </div>
+                    
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="email-address">Department</label>
-                            <div class="form-control-wrap">
-                                <input type="text" class="form-control" id="department" name="department" value="{{$employee->department}}">
-                                @error('department')
-                                <span class="invalid">{{ $message }}</span>
-                                @enderror
-                            </div>
+                            <label class="form-label" for="depart">Department :</label>
+                           <span id="depart">{{$employee->department}}</span>
                         </div>
                     </div>
                     <!-- <div class="col-lg-6">
@@ -66,24 +54,14 @@
                         </div> -->
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="email-address">Position</label>
-                            <div class="form-control-wrap">
-                                <input type="text" class="form-control" id="position" name="position" value="{{$employee->position}}">
-                                @error('position')
-                                <span class="invalid">{{ $message }}</span>
-                                @enderror
-                            </div>
+                            <label class="form-label" for="post">Position :</label>
+                           <span id="post">{{$employee->position}}</span>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="email-address">Form Date</label>
-                            <div class="form-control-wrap">
-                                <input type="text" class="form-control" id="formdate" name="formdate" value="{{date('M d, Y')}}">
-                                @error('formdate')
-                                <span class="invalid">{{ $message }}</span>
-                                @enderror
-                            </div>
+                            <label class="form-label" for="email-address">Form Date :</label>
+                            <span id="post">{{date('M d, Y')}}</span>
                         </div>
                     </div>
 
@@ -127,24 +105,14 @@
 
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="email-address">Email Address</label>
-                            <div class="form-control-wrap">
-                                <input type="text" class="form-control" id="email-address" name="email" value="{{ $employee->email }}">
-                                @error('email')
-                                <span class="invalid">{{ $message }}</span>
-                                @enderror
-                            </div>
+                            <label class="form-label" for="email-address">Email Address :</label>
+                            <span id="email-address">{{ $employee->email }}</span>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="email-address">Phone Ext</label>
-                            <div class="form-control-wrap">
-                                <input type="text" class="form-control" id="phone" name="phone" value="+1{{ $employee->phone }}">
-                                @error('email')
-                                <span class="invalid">{{ $message }}</span>
-                                @enderror
-                            </div>
+                            <label class="form-label" for="phone">Phone Ext :</label>
+                            <span id="phone">+1{{ $employee->phone }}</span>
                         </div>
                     </div>
 
@@ -189,14 +157,21 @@
                 <div class="md-form mb-4">
                 
                 <i class="fas fa-lock prefix grey-text"></i> 
-                    <label data-error="wrong" data-success="right" for="defaultForm-pass">To</label>
+                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Additional Emails</label>
                     <div class="form-group">
-                <select class="selectpicker form-control "  data-style="btn-default"   name="to[]" multiple id="to">
+                    
+                <select  class="multiselect-ui form-control" multiple="multiple" name="to[]" id="to">
+                @foreach ($adminlist as $admin)
+                    <option value="{{$admin->email}}" title="{{$admin->email}}">{{$admin->name}}</option>
+                    @endforeach
+                </select>
+   
+                {{-- <select class="selectpicker form-control "  data-style="btn-default" name="to[]" multiple id="to">
 
                 @foreach ($adminlist as $admin)
-              <option value="{{$admin->name}} <{{$admin->email}}>">{{$admin->name}} < {{$admin->email}} ></option>
+              <option value="{{$admin->email}}">{{$admin->name}} < {{$admin->email}} ></option>
               @endforeach
-                 </select>
+                 </select> --}}
                     </div>
            
                 </div>
@@ -243,16 +218,13 @@
         $('#send').click(function(e) {
             var id = $('#id').val();
             var email = $("#email").val();
-          
             var to=$('#to').val();
-     
             var subject = $("#subject").val();
-          
             var message = $("#message").val();
             
             $.ajax({
                 type: 'POST',
-                url: '/entry-form-email/' + id,
+                url: '/exit-form-email/' + id,
                 data: {
                     id: id,
                     email: email,
@@ -260,18 +232,15 @@
                     subject: subject,
                     message: message,
                     "_token": "{{ csrf_token() }}"
-            
                 },
-                
                 success: function(data) {
-                   
-                   
-                    if (data == 'success') {
-                       
+                    console.log(data);
+                  /* if (data == 'success') {
+
                         $("#success").show();
                     } else {
                         $("#danger").show();
-                    }
+                    }*/
                 },
                 error: function() {
                     alert("There was an error. Try again please!");

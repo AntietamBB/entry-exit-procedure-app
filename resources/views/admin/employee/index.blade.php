@@ -39,11 +39,10 @@
 
                 <div class="form-control-select" style="float: right;margin-right: 10px;">
 
-                    <select class="form-control" id="default-06">
-                        <option value="default_option">All</option>
-                        <option value="option_select_name">Active</option>
-                        <option value="option_select_name">Pending Entry</option>
-                        <option value="option_select_name">Pending Exit</option>
+                    <select class="form-control" id="selector">
+                        <option value="%">All</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
                     </select>
                 </div>
 
@@ -136,11 +135,14 @@
     </div>
 </div>
 @endsection
+
 <script>
     function deleteUser(id) {
         console.log(id);
         if (confirm('Are you sure you want to delete this employee ?')) {
             $('#employee_' + id).submit();
         }
-    }
+    } 
+
+    function filterdata()
 </script>

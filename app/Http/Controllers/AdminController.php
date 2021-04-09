@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
 use App\Models\User;
-use App\Models\EntryForm;
-use App\Models\ExitForm;
 use App\Rules\Filetype;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\Controller;
+use App\Models\Employee;
+use App\Models\ExitForm;
+use App\Models\EntryForm;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Mail;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -35,8 +35,10 @@ class AdminController extends Controller
         $entry_categories = \Silber\Bouncer\Database\Role::where('form_type', 1)->with('abilities')->orderBy('name')->get();
         $employee_abilities = EntryForm::where('employee_id', $id)->with('user')->get()->toArray();
         $user_categories = $user->getRoles()->toArray();
+        $avoidID =  $employee_abilities[0]['user']['id'];
         $adminlist=User::select('*')
         ->where('user_type', '=', 'admin')->where('id', '!=',Auth::id())
+        ->where('id', '!=',$avoidID)
         ->get();
         return view('admin.entry-form', [
             'categories' => $entry_categories,
@@ -91,52 +93,55 @@ class AdminController extends Controller
 
     public function entry_form_email(Request $request,  $id = NULL)
     {
-       
         $id = $request->get('id');
         $email = $request->input('email');
-      
-        $to=$request->input('to');
-        
-        
-        $subject = $request->input('subject');
-      
-        $message = $request->input('message');
-
-        $headers = $this->set_headers();
-      
-        foreach($to as $tos)
-        {
-         mail($email,$tos, $subject, $message, $headers);
+        $email_to = $request->input('to');
        
-        }
+        $i = count($email_to);
+        $email_to[$i] = $email;
         
-        if (count(Mail::failures()) > 0) {
-            echo "failure";
+        try {
+            $data['email'] = $email_to;
+            $data['subject']  = $request->input('subject');
+            Mail::send('email.admin_mail',['msg' => $request->input('message')] ,function ($m) use ($data){
+                $m->from('info@antietambroadband.com', 'Antietam Broadband');
+                $m->to($data['email'])->subject($data['subject']);
+            });
+        } catch (Exception $e) {
+            echo 'Message: ' . $e->getMessage();
         }
     
         echo "success";
     }
 
     
-    public function exit_form_email(Request $request,  $id = NULL)
-    {    $id = $request->get('id');
+    public function exit_form_email(Request $request ,$id = NULL)
+    {    
+        $id = $request->get('id');
         $email = $request->input('email');
-       $to=$request->input('to');
-    
-        $subject = $request->input('subject');
-        $message = $request->input('message');
-
-        $headers = $this->set_headers();
-
-         foreach($to as $tos)
-         {
-          mail($email,$tos, $subject, $message, $headers);
-        
-         }
-    
-        if (count(Mail::failures()) > 0) {
-            echo "failure";
-          
+        $email_to=$request->input('to');
+        if(is_array($email_to) || $email_to != null)
+        {
+            $i = count($email_to);
+            $to[$i] = $email;
+        }
+        elseif($email_to != null)
+        {
+            $to = array($email_to,$email);
+        }
+        else
+        {
+            $to = $email;
+        }
+        try {
+            $data['email'] = $to;
+            $data['subject']  = $request->input('subject');
+            Mail::send('email.admin_mail',['msg' => $request->input('message')] ,function ($m) use ($data){
+                $m->from('info@antietambroadband.com', 'Antietam Broadband');
+                $m->to($data['email'])->subject($data['subject']);
+            });
+        } catch (Exception $e) {
+            echo 'Message: ' . $e->getMessage();
         }
     
         echo "success";
@@ -158,8 +163,10 @@ class AdminController extends Controller
         $entry_categories = \Silber\Bouncer\Database\Role::where('form_type', 2)->with('abilities')->orderBy('name')->get();
         $employee_abilities = ExitForm::where('employee_id', $id)->with('user')->get()->toArray();
         $user_categories = $user->getRoles()->toArray();
+        $avoidID =  $employee_abilities[0]['user']['id'];
         $adminlist=User::select('*')
         ->where('user_type', '=', 'admin')->where('id', '!=',Auth::id())
+        ->where('id', '!=',$avoidID)
         ->get();
         return view('admin.exit-form', [
             'categories' => $entry_categories,

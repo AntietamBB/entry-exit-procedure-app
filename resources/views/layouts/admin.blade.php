@@ -63,7 +63,7 @@
                                     <a href="{{ url('employee') }}" class="nk-menu-link">
                                         <span class="nk-menu-icon"><em class="icon ni ni-users"></em></span>
                                         <span class="nk-menu-text">Manage Employees </span>
-                                        <span class="badge badge-pill badge-danger badge-dim">3</span>
+                                        {{-- <span class="badge badge-pill badge-danger badge-dim">3</span> --}}
                                     </a>
                                 </li>
                                 <li class="nk-menu-item">

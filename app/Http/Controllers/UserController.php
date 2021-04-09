@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Rules\Filetype;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
-use Mail;
-
 use App\Models\User;
+use App\Rules\Filetype;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -51,8 +51,7 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'required|digits:10'
+            'email' => 'required|email|unique:users,email'
         ]);
 
         $password =  Hash::make('password');
@@ -72,20 +71,16 @@ class UserController extends Controller
         }
 
         $subject = "You are welcome!";
-      
-        $body = "Thank you for registering with Antietam Broadband as admin user.
-        <p>Your login credentials are,</p>
-        Username: " . $request->name . "<br>
-        Password: password<br>
-        
-        Thanks<br>
-        Antietam Broadband";
-        
+
         try {
-            $headers = $this->set_headers();
-
-            mail($request->email, $subject, $body, $headers);
-
+            $data['headers'] = $this->set_headers();
+            $data['email'] = $request->email;
+            $data['name']  = $request->name;
+            $data['subject']  = $subject;
+            Mail::send('email.mailer',['name' => $request->name] ,function ($m) use ($data){
+                $m->from('info@antietambroadband.com', 'Antietam Broadband');
+                $m->to($data['email'], $data['name'])->subject($data['subject']);
+            });
         } catch (Exception $e) {
             echo 'Message: ' . $e->getMessage();
         }
@@ -144,8 +139,7 @@ class UserController extends Controller
     {   
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-            'phone' => 'required|digits:10'
+            'email' => 'required|email|unique:users,email,'.$id
         ]);
         $user = User::find($id);
         $user->update([

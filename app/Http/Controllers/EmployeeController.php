@@ -43,10 +43,7 @@ class EmployeeController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
-                'phone' => 'required|digits:10',
-                'startdate'=>'required',
-                'department'=>'required',
-                'position'=>'required'
+                'startdate'=>'required'
             ]);
 
             $password =  Hash::make('password');
@@ -105,10 +102,7 @@ class EmployeeController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
-            'phone' => 'required|digits:10',
-            'startdate'=>'required',
-            'department'=>'required',
-            'position'=>'required'
+            'startdate'=>'required'
         ]);
 		
         $startdate=  date("Y/m/d",strtotime($request['startdate']));
@@ -150,5 +144,33 @@ class EmployeeController extends Controller
         Employee::destroy($id);
 		
         return redirect()->intended('employee');
+    }
+
+
+    /**
+     * FIlter According to Active/Inactive.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function filter_data($value)
+    {
+        $operator = '=';
+        $val = '%';
+        if($value == 'Active')
+        {
+            $operator = '=';
+            $val = null;
+        }
+        elseif($value == 'Inactive')
+        {
+            $operator = '!=';
+            $val = null;
+        }
+        $users = Employee::select('*')
+        ->where('user_type', '=', 'user')
+        ->where('exitdate',$operator,$val)
+        ->get();
+        return view('admin.employee.index', ['users' => $users]);
     }
 }
