@@ -41,17 +41,6 @@
                            <span id="depart">{{$employee->department}}</span>
                         </div>
                     </div>
-                    <!-- <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-label" for="email-address">Manager</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="email-address" name="email" value="Manager">
-                                    @error('email')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div> -->
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-label" for="post">Position :</label>
@@ -85,17 +74,17 @@
                                 <div style="font-size:11px;margin-left:30px">
                                     <i>
                                         {{ $employee_abilities[$key]['user']['name'] }} - {{ date('M d, Y',strtotime($ability->created_at))}}
-                                        <a href="" class="ask_question" id="" data-ability-title="{{ $employee_abilities[$key]['user']['name'] }}-{{ $ability->title }}"  data-ability-user-email="{{ $employee_abilities[$key]['user']['email'] }}"  data-toggle="modal" data-target="#emailForm">Ask a Question</a>
+                                        <a href="" class="ask_question" id="" data-ability-title="{{ $employee->name }} - {{ $ability->title }}"  data-ability-user-email="{{ $employee_abilities[$key]['user']['email'] }}"  data-toggle="modal" data-target="#emailForm">Ask a Question</a>
                                     </i>
                                 </div>
                                 @endif
                             </div>
                         </div>
                         @empty
-                        <p> No Items Found</p>
+                        	<p> No Items Found</p>
                         @endforelse
                         @empty
-                        <p> No Categories Found</p>
+                        	<p> No Categories Found</p>
                         @endforelse
                     </div>
 
@@ -153,35 +142,22 @@
                     <input type="email" name="email" value="" id="email" class="form-control">
                 </div>
           
-                
                 <div class="md-form mb-4">
-                
-                <i class="fas fa-lock prefix grey-text"></i> 
+                	<i class="fas fa-lock prefix grey-text"></i> 
                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Additional Emails</label>
                     <div class="form-group">
-                    
-                <select  class="multiselect-ui form-control" multiple="multiple" name="to[]" id="to">
-                @foreach ($adminlist as $admin)
-                    <option value="{{$admin->email}}" title="{{$admin->email}}">{{$admin->name}}</option>
-                    @endforeach
-                </select>
-   
-                {{-- <select class="selectpicker form-control "  data-style="btn-default" name="to[]" multiple id="to">
-
-                @foreach ($adminlist as $admin)
-              <option value="{{$admin->email}}">{{$admin->name}} < {{$admin->email}} ></option>
-              @endforeach
-                 </select> --}}
+						<select  class="multiselect-ui form-control" multiple="multiple" name="to[]" id="to">
+							@foreach ($adminlist as $admin)
+								<option value="{{$admin->email}}" title="{{$admin->email}}">{{$admin->name}}</option>
+							@endforeach
+						</select>
                     </div>
-           
                 </div>
                 <div class="md-form mb-4">
                     <i class="fas fa-lock prefix grey-text"></i>
                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Subject</label>
                     <input type="text" name="subject" id="subject" class="form-control ">
                 </div>
-               
-               
                
                 <div class="md-form mb-4">
                     <i class="fas fa-lock prefix grey-text"></i>
@@ -195,24 +171,21 @@
         </div>
     </div>
 </div>
-</div>
+
 <script>
-
-
     $(document).ready(function() {
-     
         $('select').selectpicker();
+        
         $('#startdate').datepicker({
             autoclose: true
         });
-  
-});
+
         $('.ask_question').click(function() {
             $("#success").hide();
             $('#danger').hide();
  
-         $("#subject").val($(this).data('ability-title'));
-           $("#email").val($(this).data('ability-user-email'));
+            $("#subject").val($(this).data('ability-title'));
+            $("#email").val($(this).data('ability-user-email'));
         });
 
         $('#send').click(function(e) {
@@ -224,7 +197,7 @@
             
             $.ajax({
                 type: 'POST',
-                url: '/exit-form-email/' + id,
+                url: '/entry-form-email/' + id,
                 data: {
                     id: id,
                     email: email,
@@ -235,12 +208,13 @@
                 },
                 success: function(data) {
                     console.log(data);
-                  /* if (data == 'success') {
-
-                        $("#success").show();
+                    if (data == 'success') {
+                        $("#danger").hide();
+						$("#success").show();
                     } else {
-                        $("#danger").show();
-                    }*/
+                        $("#success").hide();
+						$("#danger").show();
+                    }
                 },
                 error: function() {
                     alert("There was an error. Try again please!");
@@ -249,9 +223,6 @@
 
             return false;
         });
-
-
-             
-    
+    });
 </script>
 @endsection

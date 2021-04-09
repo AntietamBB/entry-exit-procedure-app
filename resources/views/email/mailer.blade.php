@@ -333,9 +333,10 @@
     </style>
   </head>
   <body class="">
-   You have been successfully registered to Antietam Broadband as an Admin User.
+      Hi {{$name}},<br>
+      You have been successfully registered to Antietam Broadband as an Admin User.
         <p>Your login credentials are,</p>
-        Username: {{$name}} <br>
+        Email: {{$email}} <br>
         Password: password<br><br>
     
         Thanks<br>

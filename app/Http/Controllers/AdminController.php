@@ -35,18 +35,18 @@ class AdminController extends Controller
         $entry_categories = \Silber\Bouncer\Database\Role::where('form_type', 1)->with('abilities')->orderBy('name')->get();
         $employee_abilities = EntryForm::where('employee_id', $id)->with('user')->get()->toArray();
         $user_categories = $user->getRoles()->toArray();
-        $avoidID =  $employee_abilities[0]['user']['id'];
-        $adminlist=User::select('*')
-        ->where('user_type', '=', 'admin')->where('id', '!=',Auth::id())
-        ->where('id', '!=',$avoidID)
-        ->get();
+
+        $adminlist = User::select('*')
+            ->where('user_type', '=', 'admin')->where('id', '!=',Auth::id())
+            ->get();
+
         return view('admin.entry-form', [
             'categories' => $entry_categories,
             'user_categories' => $user_categories,
             'employee_abilities' => $employee_abilities,
             'user' => $user,
             'employee' => $employee,
-            'adminlist'=>$adminlist,
+            'adminlist' => $adminlist,
         ]);
     }
 
@@ -60,7 +60,7 @@ class AdminController extends Controller
             $abilities  = $request->abilities;
             foreach ($abilities as $ability) {
                 $form = EntryForm::where('employee_id', $id)->where('ability_id', $ability)->first();
-                if (empty($form)) {
+                if(empty($form)) {
                     EntryForm::create([
                         'employee_id' => $id,
                         'ability_id' => $ability,
@@ -97,9 +97,40 @@ class AdminController extends Controller
         $email = $request->input('email');
         $email_to = $request->input('to');
        
-        $i = count($email_to);
-        $email_to[$i] = $email;
-        
+        if(is_array($email_to) || $email_to != null) {
+			$i = count($email_to);
+			$email_to[$i] = $email;
+		} else {
+			$email_to = $email;
+		}
+
+        try {
+            $data['email'] = $email_to;
+            $data['subject'] = $request->input('subject');
+            Mail::send('email.admin_mail',['msg' => $request->input('message')] ,function ($m) use ($data){
+                $m->from('info@antietambroadband.com', 'Antietam Broadband');
+                $m->to($data['email'])->subject($data['subject']);
+            });
+			
+			echo "success";
+        } catch (Exception $e) {
+            echo 'Message: ' . $e->getMessage();
+        }
+    }
+
+    public function exit_form_email(Request $request ,$id = NULL)
+    {    
+        $id = $request->get('id');
+        $email = $request->input('email');
+        $email_to = $request->input('to');
+		
+        if(is_array($email_to) || $email_to != null) {
+			$i = count($email_to);
+			$email_to[$i] = $email;
+		} else {
+			$email_to = $email;
+		}
+
         try {
             $data['email'] = $email_to;
             $data['subject']  = $request->input('subject');
@@ -107,52 +138,11 @@ class AdminController extends Controller
                 $m->from('info@antietambroadband.com', 'Antietam Broadband');
                 $m->to($data['email'])->subject($data['subject']);
             });
+			
+			echo "success";
         } catch (Exception $e) {
             echo 'Message: ' . $e->getMessage();
         }
-    
-        echo "success";
-    }
-
-    
-    public function exit_form_email(Request $request ,$id = NULL)
-    {    
-        $id = $request->get('id');
-        $email = $request->input('email');
-        $email_to=$request->input('to');
-        if(is_array($email_to) || $email_to != null)
-        {
-            $i = count($email_to);
-            $to[$i] = $email;
-        }
-        elseif($email_to != null)
-        {
-            $to = array($email_to,$email);
-        }
-        else
-        {
-            $to = $email;
-        }
-        try {
-            $data['email'] = $to;
-            $data['subject']  = $request->input('subject');
-            Mail::send('email.admin_mail',['msg' => $request->input('message')] ,function ($m) use ($data){
-                $m->from('info@antietambroadband.com', 'Antietam Broadband');
-                $m->to($data['email'])->subject($data['subject']);
-            });
-        } catch (Exception $e) {
-            echo 'Message: ' . $e->getMessage();
-        }
-    
-        echo "success";
-    }
-    
-
-    public function set_headers()
-    {
-        $headers = "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= "From: " . getenv('MAIL_FROM_NAME') . " <" . getenv('MAIL_FROM_ADDRESS') . ">";
-        return $headers;
     }
 
     public function exit_form(Request $request, $id = null)
@@ -163,11 +153,11 @@ class AdminController extends Controller
         $entry_categories = \Silber\Bouncer\Database\Role::where('form_type', 2)->with('abilities')->orderBy('name')->get();
         $employee_abilities = ExitForm::where('employee_id', $id)->with('user')->get()->toArray();
         $user_categories = $user->getRoles()->toArray();
-        $avoidID =  $employee_abilities[0]['user']['id'];
+        
         $adminlist=User::select('*')
         ->where('user_type', '=', 'admin')->where('id', '!=',Auth::id())
-        ->where('id', '!=',$avoidID)
         ->get();
+
         return view('admin.exit-form', [
             'categories' => $entry_categories,
             'user_categories' => $user_categories,

@@ -11,8 +11,6 @@
             <div class="nk-block-head-content">
                 <h3 class="nk-block-title page-title">Manage Admin Users</h3>
 
-
-              
                 <div class="nk-block-des text-soft">
                     <!--<p>Lorem ipsum dolor, sit amet, consectetur adipisicing elit.</p>-->
                 </div>
@@ -28,7 +26,7 @@
         @if (session('message'))
             <div class="alert alert-pro alert-{{ session('alert_class') }} alert-dismissible">
                 <div class="alert-text">
-                    <h6 style="text-align:center;">{{ session('message') }}</h6>
+                    <h6>{{ session('message') }}</h6>
                 </div>
                 <button class="close" data-dismiss="alert"></button>
             </div>

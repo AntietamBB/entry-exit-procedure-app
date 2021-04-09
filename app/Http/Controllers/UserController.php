@@ -70,14 +70,14 @@ class UserController extends Controller
             }
         }
 
-        $subject = "You are welcome!";
+        $subject = "Welcome to Antietam Broadband!";
 
         try {
             $data['headers'] = $this->set_headers();
             $data['email'] = $request->email;
             $data['name']  = $request->name;
             $data['subject']  = $subject;
-            Mail::send('email.mailer',['name' => $request->name] ,function ($m) use ($data){
+            Mail::send('email.mailer',['name' => $request->name,'email' => $request->email] ,function ($m) use ($data){
                 $m->from('info@antietambroadband.com', 'Antietam Broadband');
                 $m->to($data['email'], $data['name'])->subject($data['subject']);
             });
@@ -97,9 +97,6 @@ class UserController extends Controller
         $headers .= "From: " . getenv('MAIL_FROM_NAME') . " <" . getenv('MAIL_FROM_ADDRESS') . ">";
         return $headers;
     }
-
-        
-      
 
     /**
      * Display the specified resource.
@@ -139,7 +136,7 @@ class UserController extends Controller
     {   
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id
+            'email' => 'required|email|unique:users,email,'.$id,
         ]);
         $user = User::find($id);
         $user->update([

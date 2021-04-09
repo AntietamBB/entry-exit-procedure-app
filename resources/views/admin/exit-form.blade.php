@@ -36,17 +36,6 @@
                            <span id="depart">{{$employee->department}}</span>
                         </div>
                     </div>
-                    <!--              <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-label" for="email-address">Manager</label>
-                                <div class="form-control-wrap">
-                                    <input type="text" class="form-control" id="email-address" name="email" value="{{$user->position}}">
-                                    @error('email')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div> -->
                     <div class="col-lg-6">
                         <div class="form-group">
                            <label class="form-label" for="post">Position :</label>
@@ -79,20 +68,19 @@
                                 @if($key !== false )
                                 <div style="font-size:11px;margin-left:30px">
                                     <i>{{ $employee_abilities[$key]['user']['name'] }} - {{ date('M d, Y',strtotime($ability->created_at))}}
-                                        <a href="" class="ask_question" id="" data-ability-title="{{ $employee_abilities[$key]['user']['name'] }}-{{ $ability->title }}" data-ability-user-email="{{ $employee_abilities[$key]['user']['email'] }}" data-toggle="modal" data-target="#emailForm">Ask a Question</a>
+                                        <a href="" class="ask_question" id="" data-ability-title="{{ $employee->name }} - {{ $ability->title }}" data-ability-user-email="{{ $employee_abilities[$key]['user']['email'] }}" data-toggle="modal" data-target="#emailForm">Ask a Question</a>
                                     </i>
                                 </div>
                                 @endif
                             </div>
                         </div>
                         @empty
-                        <p> No Items Found</p>
+                        	<p> No Items Found</p>
                         @endforelse
                         @empty
-                        <p> No Categories Found</p>
+                       		<p> No Categories Found</p>
                         @endforelse
                     </div>
-
 
                     <div class="col-lg-12">
                         <hr>
@@ -147,26 +135,16 @@
                     <input type="email" name="email" value="" id="email" class="form-control validate">
                 </div>
 
-                
                 <div class="md-form mb-4">
-                
-                <i class="fas fa-lock prefix grey-text"></i> 
+                	<i class="fas fa-lock prefix grey-text"></i> 
                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Additional Emails</label>
                     <div class="form-group">
-                    {{-- <select id="dates-field2" class="multiselect-ui form-control" multiple="multiple" name="to[]" id="to">
-                    @foreach ($adminlist as $admin)
-                        <option value="{{$admin->email}}" title="{{$admin->email}}">{{$admin->name}}</option>
-                        @endforeach
-                    </select> --}}
-                            <select  class="selectpicker form-control "  data-style="btn-default"   name="to[]" multiple id="to">
-
-                            @foreach ($adminlist as $admin)
-                        <option value="{{$admin->email}}" title="{{$admin->email}}">{{$admin->name}}</option>
-                        {{-- <option value="{{$admin->name}} <{{$admin->email}}>">{{$admin->name}} < {{$admin->email}} ></option> --}}
-                        @endforeach
-                            </select>
+                    	<select  class="selectpicker form-control "  data-style="btn-default"   name="to[]" multiple id="to">
+							@foreach ($adminlist as $admin)
+                        		<option value="{{$admin->email}}" title="{{$admin->email}}">{{$admin->name}}</option>
+                        	@endforeach
+                        </select>
                     </div>
-           
                 </div>
               
                 <div class="md-form mb-4">
@@ -187,11 +165,10 @@
         </div>
     </div>
 </div>
-</div>
+
 <script>
     $(document).ready(function() {
         $('#startdate').datepicker({
-
             autoclose: true
         });
 
@@ -210,7 +187,7 @@
             var subject = $("#subject").val();
             var message = $("#message").val();
             console.log(to);
-           /*  $.ajax({
+            $.ajax({
                 type: 'POST',
                 url: '/exit-form-email/' + id,
                 data: {
@@ -233,7 +210,7 @@
                 error: function() {
                     alert("There was an error. Try again please!");
                 }
-            });*/
+            });
 
             return false;
         });
