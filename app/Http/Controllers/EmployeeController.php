@@ -17,6 +17,7 @@ class EmployeeController extends Controller
         $users = Employee::select('*')
             ->where('user_type', '=', 'user')
             ->get();
+
         return view('admin.employee.index', ['users' => $users]);
     }
 
@@ -153,24 +154,27 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function filter_data($value)
+    public function filter_data($status)
     {
-        $operator = '=';
-        $val = '%';
-        if($value == 'Active')
-        {
+        if($status == 'active') {
             $operator = '=';
             $val = null;
-        }
-        elseif($value == 'Inactive')
-        {
+        } elseif($status == 'inactive') {
             $operator = '!=';
             $val = null;
         }
-        $users = Employee::select('*')
-        ->where('user_type', '=', 'user')
-        ->where('exitdate',$operator,$val)
-        ->get();
-        return view('admin.employee.index', ['users' => $users]);
+
+        if($status == 'active' || $status == 'inactive') {
+            $users = Employee::select('*')
+                ->where('user_type', '=', 'user')
+                ->where('exitdate',$operator,$val)
+                ->get();
+        } else {
+            $users = Employee::select('*')
+                ->where('user_type', '=', 'user')
+                ->get();
+        }
+
+        return view('admin.employee.index-filter', ['users' => $users]);
     }
 }

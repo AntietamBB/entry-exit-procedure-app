@@ -39,10 +39,10 @@
 
                 <div class="form-control-select" style="float: right;margin-right: 10px;">
 
-                    <select class="form-control" id="selector">
-                        <option value="%">All</option>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
+                    <select class="form-control" id="selector" onchange="filterdata(this.value)">
+                        <option value="all">All</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
                     </select>
                 </div>
 
@@ -65,7 +65,7 @@
 	
     <div class="card card-bordered card-stretch">
         <div class="card-inner-group">
-            <div class="card card-bordered card-preview">
+            <div id="employee_list" class="card card-bordered card-preview">
                 <table class="table table-tranx table-hover">
                     <thead>
                         <tr class="tb-tnx-head">
@@ -88,9 +88,9 @@
                             <td>{{$user->phone}}</td>
                             <td>
                                 @if($user->exitdate==NULL)
-									<span class="badge badge-dot badge-success">Active</span>
+                                    <span class="badge badge-dot badge-success">Active</span>
                                 @else
-                                	<span class="badge badge-dot badge-danger">Inactive</span>
+                                    <span class="badge badge-dot badge-danger">Inactive</span>
                                 @endif
                             </td>
 
@@ -98,7 +98,7 @@
                             <td class="tb-tnx-action">
                                 <a href="{{ url('employee/'.$user->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a><br>
                                 
-                              
+                            
                                 @if($user->exitdate==NULL)
                                 <a href="{{url('entry-form/'.$user->id)}}" ><em class="icon ni ni-minus-circle-fill"></em><span>Entry Form</span></a><br>
                                 @else
@@ -117,32 +117,23 @@
                 </table>
             </div>
         </div>
-        {{-- <div class="card-inner">
-                <div class="nk-block-between-md g-3">
-                    <div class="g">
-                        <ul class="pagination justify-content-center justify-content-md-start">
-                            <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><span class="page-link"><em class="icon ni ni-more-h"></em></span></li>
-                            <li class="page-item"><a class="page-link" href="#">6</a></li>
-                            <li class="page-item"><a class="page-link" href="#">7</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div> --}}
     </div>
 </div>
 @endsection
 
 <script>
     function deleteUser(id) {
-        console.log(id);
         if (confirm('Are you sure you want to delete this employee ?')) {
             $('#employee_' + id).submit();
         }
     } 
 
-    function filterdata()
+    function filterdata(status) {
+        $.ajax({
+            url: "employee/filter-data/"+status,
+            success: function(result){
+                $("#employee_list").html(result);
+            }
+        });
+    }
 </script>
