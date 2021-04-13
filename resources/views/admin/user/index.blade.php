@@ -15,9 +15,12 @@
                     <!--<p>Lorem ipsum dolor, sit amet, consectetur adipisicing elit.</p>-->
                 </div>
             </div>
+
             <div class="nk-block-head-content">
                 <div class="toggle-wrap nk-block-tools-toggle">
+                @if(Auth::user()->user_type == "super_admin")
                     <a class="btn btn-primary" href="{{ url('user/create') }}"><em class="icon ni ni-plus"></em><span>Add Admin User</span></a>
+                @endif
                 </div>
             </div>
         </div>
@@ -44,7 +47,9 @@
                                 <th scope="col">Entry Form Abilities</th>
                                 <th scope="col">Exit Form Abilities</th>
                                 <th scope="col">Created On</th>
+                                @if(Auth::user()->user_type == "super_admin")
                                 <th>Action</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -106,14 +111,17 @@
 											</div>
 										@endif
                                     </td> -->
+                                    @if(Auth::user()->user_type == "super_admin")
                                     <td>
                                         <a style="position:relative;top:7px;" href="{{ url('user/'.$user->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a>
+                                        
                                         <form method="post" action="<?= url('user/'.$user->id) ?>" id="user_{{ $user->id }}" style="display:inline-block">
                                             @method('DELETE')
                                             @csrf
                                             <a style="position:relative;top:7px;"onClick="deleteUser({{ $user->id }})" href="javascript:void(0)" rel="nofollow" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span>Remove</span></a>
                                         </form>
                                     </td>
+                                    @endif
                                 </tr>
                             @empty
                             <!-- <tr>
