@@ -37,9 +37,10 @@
             <div class="toggle-wrap nk-block-tools-toggle">
                 <a class="btn btn-primary" href="{{ url('employee/create') }}" style="float:right"><em class="icon ni ni-plus"></em><span>Add Employee</span></a>
 
-                <div class="form-control-select" style="float: right;margin-right: 10px;">
-
-                    <select class="form-control" id="selector" onchange="filterdata(this.value)">
+                <input type="text" class="form-control" id="keyword" name="keyword" style="float:right;margin-right:10px;width:200px;" onkeyup="filterdata();" placeholder="Search Name/Email">
+                
+                <div class="form-control-select" style="float:right;margin-right:10px;">
+                    <select class="form-control" id="selector" onchange="filterdata(this.value)" style="float:left;">
                         <option value="all">All</option>
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
@@ -129,8 +130,17 @@
     } 
 
     function filterdata(status) {
+        var status = $('#selector').val();
+        var keyword = $('#keyword').val();
+        
         $.ajax({
-            url: "employee/filter-data/"+status,
+            type: 'POST',
+            url: "employee/filter-data",
+            data: {
+                status: status,
+                keyword: keyword,
+                "_token": "{{ csrf_token() }}"
+            },
             success: function(result){
                 $("#employee_list").html(result);
             }

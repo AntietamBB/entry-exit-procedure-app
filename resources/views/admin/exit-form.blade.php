@@ -199,7 +199,6 @@
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function(data) {
-                    console.log(data);
                    if (data == 'success') {
 
                         $("#success").show();

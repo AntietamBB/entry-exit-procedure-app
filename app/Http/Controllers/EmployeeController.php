@@ -154,8 +154,11 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function filter_data($status)
+    public function filter_data(Request $request)
     {
+        $status = $request->status;
+        $keyword = $request->keyword;
+
         if($status == 'active') {
             $operator = '=';
             $val = null;
@@ -163,18 +166,23 @@ class EmployeeController extends Controller
             $operator = '!=';
             $val = null;
         }
+        
+        $users = Employee::select('*')->where('user_type', '=', 'user');
+
 
         if($status == 'active' || $status == 'inactive') {
-            $users = Employee::select('*')
-                ->where('user_type', '=', 'user')
-                ->where('exitdate',$operator,$val)
-                ->get();
-        } else {
-            $users = Employee::select('*')
-                ->where('user_type', '=', 'user')
-                ->get();
+            $users->where('exitdate',$operator,$val);
         }
 
-        return view('admin.employee.index-filter', ['users' => $users]);
+        if($keyword != '') {
+            $users->where(function($query) use ($keyword){
+                $query->orWhere('name', 'LIKE', '%'.$keyword.'%');
+                $query->orWhere('email', 'LIKE', '%'.$keyword.'%');
+            });
+        }
+
+        $users_list = $users->get();
+
+        return view('admin.employee.index-filter', ['users' => $users_list]);
     }
 }
