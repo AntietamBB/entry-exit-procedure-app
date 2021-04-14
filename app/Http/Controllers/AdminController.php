@@ -330,8 +330,8 @@ class AdminController extends Controller
 
                             Mail::send('email.forgot_pass', $data, function ($message) use ($data) {
                                 $message->to($data['email']);
-                                $message->subject('Password reset for Volkswagen');
-                                $message->from(env('MAIL_USERNAME'), 'Volkswagen');
+                                $message->subject('Password reset for Antietam Broadband');
+                                $message->from(env('MAIL_FROM_ADDRESS'), 'Antietam Broadband');
                             });
                             return redirect('/forgot_password')->with('forgot_message_sucess', 'Your password reset link is sent to your email id');
                         }

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Volkswagen'),
+    'name' => env('APP_NAME', 'Antietam Broadband'),
 
     /*
     |--------------------------------------------------------------------------

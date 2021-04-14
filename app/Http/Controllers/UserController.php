@@ -78,7 +78,7 @@ class UserController extends Controller
             $data['name']  = $request->name;
             $data['subject']  = $subject;
             Mail::send('email.mailer',['name' => $request->name,'email' => $request->email] ,function ($m) use ($data){
-                $m->from('info@antietambroadband.com', 'Antietam Broadband');
+                $m->from(env('MAIL_FROM_ADDRESS'), 'Antietam Broadband');
                 $m->to($data['email'], $data['name'])->subject($data['subject']);
             });
         } catch (Exception $e) {
