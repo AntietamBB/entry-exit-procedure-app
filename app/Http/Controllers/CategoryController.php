@@ -55,6 +55,7 @@ class CategoryController extends Controller
             
         ]);
         Roles::where('name',$name)->update(['form_type' => $request->category_form]);
+        
         return redirect()->intended('category');
     }
 
@@ -78,6 +79,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Roles::find($id);
+
         return view('admin.category.edit', ['category' => $category]);
     }
 
@@ -91,6 +93,7 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         Roles::where('id',$id)->update(['title' => $request->name]);
+
         return redirect()->intended('category');
     }
 
@@ -109,6 +112,7 @@ class CategoryController extends Controller
             ExitForm::whereIn('ability_id',$ability_ids)->delete();
         }
         Roles::destroy($id);
+
         return redirect()->intended('category');
     }
 }

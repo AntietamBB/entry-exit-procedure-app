@@ -21,9 +21,7 @@ class CategoryItemController extends Controller
     public function index($category_id)
     {
         $category = Roles::where("id", "=", $category_id)->first();
-
         $permissions = Permissions::where("entity_id", "=", $category_id)->select(['ability_id'])->get();
-        
         $items = Abilities::whereIN('id', $permissions)->get();
 
         return view('admin.item.index', ['items'=>$items, 'category'=>$category]);
@@ -54,11 +52,6 @@ class CategoryItemController extends Controller
         ]);
 
         $category = Roles::where("id", "=", $request->category_id)->first();
-
-        // $item = Bouncer::ability()->firstOrCreate([
-        //     'name' => str_replace(' ', '_', strtolower($request->name)),
-        //     'title' => $request->name,
-        // ]);
         $role = $category->name;
         $ability = str_replace(' ', '_', strtolower($request->name));
 
@@ -87,6 +80,7 @@ class CategoryItemController extends Controller
     public function edit($category_id,$item_id)
     {   
         $item = Abilities::find($item_id);
+
         return view('admin.item.edit', ['item' => $item ,'category_id' => $category_id]);
     }
 
@@ -100,6 +94,7 @@ class CategoryItemController extends Controller
     public function update(Request $request, $category_id,$item_id)
     {
         Abilities::where('id',$item_id)->update(['title' => $request->name]);
+
         return redirect()->intended('category/'.$category_id.'/item');
     }
 
@@ -114,6 +109,7 @@ class CategoryItemController extends Controller
         Abilities::destroy($item_id);
         EntryForm::where('ability_id',$item_id)->delete();
         ExitForm::where('ability_id',$item_id)->delete();
+
         return redirect()->intended('category/'.$category_id.'/item');
     }
 }

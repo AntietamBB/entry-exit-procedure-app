@@ -54,13 +54,13 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email'
         ]);
 
-        $password =  Hash::make('password');
+        $token = $this->getToken();
         $user = User::create([
             'user_type' => 'admin',
             'name'=> $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'password' => $password,
+            'token' => $token,
         ]);
 
         if(isset($request->category)){
@@ -77,7 +77,7 @@ class UserController extends Controller
             $data['email'] = $request->email;
             $data['name']  = $request->name;
             $data['subject']  = $subject;
-            Mail::send('email.mailer',['name' => $request->name,'email' => $request->email] ,function ($m) use ($data){
+            Mail::send('email.admin-user-register-mail',['name' => $request->name, 'email' => $request->email, 'link' => $token] ,function ($m) use ($data){
                 $m->from(env('MAIL_FROM_ADDRESS'), 'Antietam Broadband');
                 $m->to($data['email'], $data['name'])->subject($data['subject']);
             });
@@ -88,13 +88,19 @@ class UserController extends Controller
         if (count(Mail::failures()) > 0) {
             return redirect('user')->with('error', 'Error');
         }
+
         return redirect('user')->with('message', 'Admin user has been succesfully registered');
+    }
+
+    protected function getToken() {
+        return hash_hmac('sha256', str_random(40), config('app.key'));
     }
 
     public function set_headers()
     {
         $headers = "Content-type:text/html;charset=UTF-8" . "\r\n";
         $headers .= "From: " . getenv('MAIL_FROM_NAME') . " <" . getenv('MAIL_FROM_ADDRESS') . ">";
+
         return $headers;
     }
 
@@ -167,6 +173,7 @@ class UserController extends Controller
     public function destroy($id)
     {
        User::destroy($id);
+
        return redirect()->intended('user');
     }
 }

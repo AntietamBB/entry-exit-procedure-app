@@ -115,11 +115,8 @@ class EmployeeController extends Controller
         }
         else {
             $exitdate = NULL;
-         
-       }
+        }
      
-       
-
         $employee->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -130,7 +127,6 @@ class EmployeeController extends Controller
             'position'      =>$request->position,
         ]);
       
-        
         return redirect()->intended('employee');
     }
     
@@ -146,7 +142,6 @@ class EmployeeController extends Controller
 		
         return redirect()->intended('employee');
     }
-
 
     /**
      * FIlter According to Active/Inactive.
@@ -168,7 +163,6 @@ class EmployeeController extends Controller
         }
         
         $users = Employee::select('*')->where('user_type', '=', 'user');
-
 
         if($status == 'active' || $status == 'inactive') {
             $users->where('exitdate',$operator,$val);
