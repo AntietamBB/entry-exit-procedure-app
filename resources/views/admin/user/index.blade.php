@@ -148,8 +148,8 @@
 								@csrf
 								<input type="hidden" class="form-control" id="uid" name="uid" value="" />
 								<div class="form-group">
-								   <label for="update">Enter New Password</label>
-									<input type="text" class="form-control" id="newpw" name="newpw" placeholder="Enter your new password">
+								   <label for="update">New Password</label>
+									<input type="text" class="form-control" id="newpw" name="newpw" placeholder="Enter new password">
 									<span id="error"></span>
 								</div>
 		
