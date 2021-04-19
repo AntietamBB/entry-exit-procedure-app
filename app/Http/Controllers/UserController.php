@@ -88,7 +88,8 @@ class UserController extends Controller
         if (count(Mail::failures()) > 0) {
             return redirect('user')->with('error', 'Error');
         }
-
+		
+		$request->session()->flash('alert_class', 'success');
         return redirect('user')->with('message', 'Admin user has been succesfully registered');
     }
 
@@ -172,8 +173,25 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-       User::destroy($id);
-
-       return redirect()->intended('user');
+		User::destroy($id);
+		
+		return redirect()->intended('user');
     }
+    
+    public function resetpass(Request $request)
+    {
+		$user = User::where('id', $request->uid)->first();
+		
+		$user->password = Hash::make($request->newpw);
+
+		if($user->save()) {
+			$request->session()->flash('message', 'Password updated successfully.');
+			$request->session()->flash('alert_class', 'success');
+		} else {
+			$request->session()->flash('message', 'Something went wrong, Please try again!');
+			$request->session()->flash('alert_class', 'danger');
+		}
+
+		return redirect()->intended('user');
+	}
 }

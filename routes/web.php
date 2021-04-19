@@ -74,6 +74,8 @@ Route::match(['get', 'post'], 'exit-form-email/{id?}', [AdminController::class, 
 
 Route::match(['get', 'post'], 'employee/filter-data', [EmployeeController::class, 'filter_data'])->middleware('admin');
 
+Route::put('user', [UserController::class, 'resetpass'])->middleware('admin');
+
 Route::resource('user', UserController::class)->middleware('admin');
 Route::resource('category', CategoryController::class)->middleware('admin');
 Route::resource('category.item', CategoryItemController::class)->middleware('admin');

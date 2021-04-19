@@ -56,7 +56,7 @@ class EmployeeController extends Controller
                 'email'         => $request->email,
                 'phone'         => $request->phone,
                 'startdate'     => $startdate,
-                'exitdate'       => NULL,
+                'exitdate'      => NULL,
                 'department'    => $request->department,
                 'position'      => $request->position,
                 'user_type'     => 'user',
