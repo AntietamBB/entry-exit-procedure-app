@@ -11,18 +11,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/theme.css') }}" >
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}" >
     <link rel="stylesheet" type="text/css" href="{{ asset('js/bootstrap.min.js') }}" >
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
-
-
-
-
-
-
-
-
-
+    
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
 </head>
 
 <style>
@@ -31,7 +22,6 @@
         background-color: #bb6d68;
         border-color: #bb6d68;
     }
-
 </style>
 
 <body class="nk-body bg-lighter npc-general has-sidebar">

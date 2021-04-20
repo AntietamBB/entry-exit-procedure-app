@@ -88,14 +88,14 @@
 								
 								@if(Auth::user()->user_type == "super_admin")
 								<td>
-									<a style="position:relative;top:7px;" href="{{ url('user/'.$user->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a>
+									<a style="" href="{{ url('user/'.$user->id.'/edit') }}"><em class="icon ni ni-edit-alt"></em><span>Edit</span></a>
 									
 									<form method="post" action="<?= url('user/'.$user->id) ?>" id="user_{{ $user->id }}" style="display:inline-block">
 										@method('DELETE')
 										@csrf
-										<a style="position:relative;top:7px;"onClick="deleteUser({{ $user->id }})" href="javascript:void(0)" rel="nofollow" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span>Remove</span></a>
+										<a style=""onClick="deleteUser({{ $user->id }})" href="javascript:void(0)" rel="nofollow" class="text-danger" style="margin-left: 7px;"><em class="icon ni ni-trash"></em><span>Remove</span></a>
 									</form>
-									<a href="#myModal" data-toggle="modal"  data-id="{{$user->id}}" class="open-Dialog text-info" style="position:relative;top:7px;">Reset Password</a>
+									<a href="#myModal" data-toggle="modal"  data-id="{{$user->id}}" class="open-Dialog text-info" style=""><em class="icon ni ni-unlock-fill"></em>Reset Password</a>
 								</td>
 								@endif
 							</tr>
