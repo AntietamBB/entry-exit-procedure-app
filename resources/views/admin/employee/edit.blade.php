@@ -69,8 +69,17 @@
                              </div>
                                
                             </div>
-                        
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="taskdate">Task Completion Date</label>
+                                <div class="form-control-wrap">
+                                    <input data-provide="datepicker" id="taskdate"  class="form-control" name="taskdate" data-date-format="mm/dd/yyyy" placeholder="Select date" value="{{($employee->task_completion_date ? date('m/d/Y', strtotime($employee->task_completion_date)):'')}}">
+                                </div>
+                               
                         </div>
+                    </div>
                      
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -94,6 +103,42 @@
                                 </div>
                             </div>
                         </div>
+                    <div id="cat" class="col-lg-12">
+                        <div class="form-group" >
+                                <label class="form-label" for="phone-no">Exit Form Abilities</label>
+                        </div>
+
+                        <div class="row">
+                            @foreach($exit_categories as $role)
+                               <div class="col-lg-4">
+                                  <div class="form-group">
+                                  <label for="{{ $role->name }}">{{ $role->title }}</label>  
+                                  <!-- <input type="hidden" name="category[]" value="{{$role->id}}"> -->
+
+                                    
+                                  </div>
+                               </div>
+                            
+                               <div class="col-lg-6">
+                                    <div class="form-control-select" style="float:left;margin-right:10px;margin-bottom:10px;">
+                                      <select class="form-control" name="selectadmin[{{$role->id}}][]">
+                                            <option>---Select---</option>
+                                            @foreach($admin as $adm)
+                                                <option value="{{$adm->id}}"
+                                                    {{(isset($tasks[$role->id]) && $tasks[$role->id]['admin_id'] == $adm->id) ? 'selected': ''}}
+                                                >
+                                                    {{$adm->name}}
+                                                </option>
+                                            
+                                            @endforeach
+                                      </select>
+                                    
+                                    </div>
+                               </div>
+                            @endforeach
+                        </div>
+                    </div>
+
                     <div class="col-12">
                         <div class="form-group">
                             <button type="submit" class="btn btn-lg btn-primary"><em class="icon ni ni-save"></em><span>Save</span></button></a>
@@ -111,6 +156,20 @@ $(document).ready(function () {
     });
     $('#exitdate').datepicker({
         autoclose: true
+    });
+
+    if($("#taskdate").val() == "" || $("#taskdate").val() == null) {
+        $("#cat").hide(); 
+    } else {
+        $("#cat").show();
+    }
+
+    $("#taskdate").change(function(){
+        if($(this).val() == "" || $(this).val() == null) {
+            $("#cat").hide();
+        } else {
+            $("#cat").show();
+        }
     });
 });
 </script>

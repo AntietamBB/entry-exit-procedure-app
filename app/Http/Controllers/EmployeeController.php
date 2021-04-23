@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Models\Tasks;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
+
 class EmployeeController extends Controller
 {
     /**
@@ -87,8 +91,12 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = Employee::find($id);
+        $admin = User::where('user_type','admin')->with('roles')->orderBy('id')->get();
+	$exit_categories = \Silber\Bouncer\Database\Role::where('form_type',2)->select(['id','name','title'])->orderBy('name')->get();
+	
+	$tasks = Tasks::where('employee_id', $id)->get()->keyBy('category_id')->toArray();        
 		
-        return view('admin.employee.edit', ['employee' => $employee]);
+        return view('admin.employee.edit', ['tasks'=>$tasks,'admin'=>$admin,'employee' => $employee,'exit_categories' => $exit_categories]);
     }
 
     /**
@@ -109,24 +117,47 @@ class EmployeeController extends Controller
         $startdate=  date("Y/m/d",strtotime($request['startdate']));
    
        $employee = Employee::find($id);
-        if(isset($request['exitdate']) && $request['exitdate'] !="")
-        {
+
+        if(isset($request['exitdate']) && $request['exitdate'] !="") {
             $exitdate=  date("Y/m/d",strtotime($request['exitdate']));
-        }
-        else {
+        } else {
             $exitdate = NULL;
         }
-     
+
+        if(isset($request['taskdate']) && $request['taskdate'] !="") {
+            $taskdate=  date("Y/m/d",strtotime($request['taskdate']));
+        } else {
+            $taskdate = NULL;
+        }
+
         $employee->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'startdate'     =>$startdate,
             'exitdate'       =>$exitdate,
+            'task_completion_date'       =>$taskdate,
             'department'    =>$request->department,
             'position'      =>$request->position,
         ]);
       
+        if($request->taskdate !=""){
+            Tasks::where('employee_id', $id)->delete();
+            $tasks = [];
+            foreach($request->selectadmin as $k=>$admin) {
+                $tasks[]=[
+                    'employee_id' => $id,
+                    'admin_id'    => $admin[0],
+                    'category_id' => $k,
+                    'target_date' =>date("Y/m/d",strtotime($request['taskdate'])),
+                    'created_at'  => \Carbon\Carbon::now()->toDateTimeString()
+
+                ];
+                }
+        
+            Tasks::insert($tasks);
+
+        }
         return redirect()->intended('employee');
     }
     

@@ -88,6 +88,45 @@
                             </div>
                             <div class="nk-header-tools">
                                 <ul class="nk-quick-nav">
+
+
+                                <li class="dropdown notification-dropdown mr-n1">
+                                    <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-toggle="dropdown" aria-expanded="false">
+                                        <div class="icon-status-info">
+                                            <em class="icon ni ni-bell"></em>
+                                        </div>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1" style="">
+                                        <div class="dropdown-head">
+                                            <span class="sub-title nk-dropdown-title">Notifications{{$count}}</span>
+                                            <!-- <a href="#">Mark All as Read</a> -->
+                                        </div>
+
+                                        <div class="dropdown-body">
+                                            <div class="nk-notification">
+                                                @foreach($notifys as $notify) 
+                                                    <div class="nk-notification-item dropdown-inner">
+                                                        <div class="nk-notification-icon">
+                                                            <em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em>
+                                                        </div>
+                                                        <div class="nk-notification-content">
+                                                            <div class="nk-notification-text">
+                                                                employee{{$notify->employee_id}} with category {{$notify['category_id']}} assigned fo you with task completion date{{$notify['target_date']}} .</br>
+                                                            </div>
+                                                            <div class="nk-notification-time">2 hrs ago</div>
+                                                        </div>
+                                                    </div>
+                                                 @endforeach
+                                            </div>
+                                        </div>
+                                        <!-- <div class="dropdown-foot center">
+                                            <a href="#">View All</a>
+                                        </div> -->
+                                    </div>
+                                </li>
+
+                                    
+                      
                                     <li class="dropdown user-dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                             <div class="user-toggle">
