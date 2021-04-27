@@ -104,22 +104,23 @@
                             </div>
                         </div>
                     <div id="cat" class="col-lg-12">
-                        <div class="form-group" >
-                                <label class="form-label" for="phone-no">Exit Form Abilities</label>
+                        <hr>
+                        <div class="form-group" style="text-align:left;">
+                            <label class="form-label" style="color:#798bff;font-size:20px;text-decoration:underline;">Assign Categories to Admin Users</label>
                         </div>
 
                         <div class="row">
                             @foreach($exit_categories as $role)
-                               <div class="col-lg-4">
+                               <div class="col-lg-4" style="text-align:left;">
                                   <div class="form-group">
-                                  		<label for="{{ $role->name }}">{{ $role->title }}</label>
+                                  		<label for="{{ $role->name }}" style="margin-top:8px;"><b>{{ $role->title }}</b></label>
                                   </div>
                                </div>
                             
                                <div class="col-lg-6">
-                                    <div class="form-control-select" style="float:left;margin-right:10px;margin-bottom:10px;">
+                                    <div class="form-control-select" style="float:left;margin-right:10px;margin-bottom:10px;width:250px;">
                                       <select class="form-control" name="selectadmin[{{ $role->id }}][]">
-                                            <option value="">---Select---</option>
+                                            <option value="">-- Select Admin User --</option>
                                             @foreach($admin as $adm)
                                                 @foreach($adm['roles'] as $rle)
 													@if($rle['id'] == $role->id)
