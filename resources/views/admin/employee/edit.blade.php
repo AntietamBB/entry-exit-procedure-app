@@ -112,27 +112,27 @@
                             @foreach($exit_categories as $role)
                                <div class="col-lg-4">
                                   <div class="form-group">
-                                  <label for="{{ $role->name }}">{{ $role->title }}</label>  
-                                  <!-- <input type="hidden" name="category[]" value="{{$role->id}}"> -->
-
-                                    
+                                  		<label for="{{ $role->name }}">{{ $role->title }}</label>
                                   </div>
                                </div>
                             
                                <div class="col-lg-6">
                                     <div class="form-control-select" style="float:left;margin-right:10px;margin-bottom:10px;">
-                                      <select class="form-control" name="selectadmin[{{$role->id}}][]">
-                                            <option>---Select---</option>
+                                      <select class="form-control" name="selectadmin[{{ $role->id }}][]">
+                                            <option value="">---Select---</option>
                                             @foreach($admin as $adm)
-                                                <option value="{{$adm->id}}"
-                                                    {{(isset($tasks[$role->id]) && $tasks[$role->id]['admin_id'] == $adm->id) ? 'selected': ''}}
-                                                >
-                                                    {{$adm->name}}
-                                                </option>
-                                            
+                                                @foreach($adm['roles'] as $rle)
+													@if($rle['id'] == $role->id)
+														<option value="{{ $adm['id'] }}"
+															{{ (isset($tasks[$role->id]) && $tasks[$role->id]['admin_id'] == $adm['id']) ? 'selected': '' }}
+														>
+															{{ $adm['name'] }}
+														</option>
+														@continue
+													@endif
+                                            	@endforeach
                                             @endforeach
                                       </select>
-                                    
                                     </div>
                                </div>
                             @endforeach
@@ -149,28 +149,35 @@
         </div>
     </div>
 </div>
+
 <script>
-$(document).ready(function () {
-    $('#startdate').datepicker({
-        autoclose: true
-    });
-    $('#exitdate').datepicker({
-        autoclose: true
-    });
+    $(document).ready(function () {
+        $('#startdate').datepicker({
+            autoclose: true
+        });
 
-    if($("#taskdate").val() == "" || $("#taskdate").val() == null) {
-        $("#cat").hide(); 
-    } else {
-        $("#cat").show();
-    }
+        $('#exitdate').datepicker({
+            autoclose: true
+        });
 
-    $("#taskdate").change(function(){
-        if($(this).val() == "" || $(this).val() == null) {
-            $("#cat").hide();
+        $('#taskdate').datepicker({
+            autoclose: true
+        });
+
+        if($("#taskdate").val() == "" || $("#taskdate").val() == null) {
+            $("#cat").hide(); 
         } else {
             $("#cat").show();
         }
+
+        $("#taskdate").change(function(){
+            if($(this).val() == "" || $(this).val() == null) {
+                $("#cat").hide();
+            } else {
+                $("#cat").show();
+            }
+        });
     });
-});
 </script>
+
 @endsection

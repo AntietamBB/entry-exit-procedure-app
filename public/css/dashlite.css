@@ -9269,9 +9269,9 @@ body.nav-shown { overflow: hidden; }
 
 .is-theme .nk-quick-nav-icon:before { background-color: #1f275c; }
 
-.show > .nk-quick-nav-icon:before { opacity: 1; height: 116%; width: 116%; }
+.show > .nk-quick-nav-icon:before { opacity: 0; height: 116%; width: 116%; }
 
-.nk-quick-nav-icon:hover:before, .nk-quick-nav-icon.active:before { opacity: 1; height: 116%; width: 116%; }
+.nk-quick-nav-icon:hover:before, .nk-quick-nav-icon.active:before { opacity: 0; height: 116%; width: 116%; }
 
 @media (max-width: 359px) { .nk-quick-nav { margin: 0 -3px; }
   .nk-quick-nav > li { padding: 0 3px; }
@@ -10916,9 +10916,9 @@ h6 .badge { margin-left: 0.5rem; }
 
 .icon-status { position: relative; display: inline-flex; }
 
-.icon-status:after { position: absolute; border-radius: 50%; right: 0; top: 1px; height: 10px; width: 10px; border: 2px solid #fff; content: ''; }
+.icon-status:after { position: absolute; border-radius: 50%; right: 0; top: 1px; height: 10px; width: 10px; border: 2px solid red; content: ''; }
 
-.icon-status-info:after { background: #09c2de; }
+.icon-status-info:after { background: red; }
 
 .icon-overlap { display: inline-flex; align-items: center; flex-direction: row-reverse; flex-shrink: 0; }
 

@@ -7,6 +7,7 @@ use App\Rules\Filetype;
 use App\Models\Employee;
 use App\Models\ExitForm;
 use App\Models\EntryForm;
+use App\Models\Tasks;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -150,16 +151,16 @@ class AdminController extends Controller
         $user_id = Auth::id();
         $user = User::find($user_id);
         $employee = User::find($id);
-        $entry_categories = \Silber\Bouncer\Database\Role::where('form_type', 2)->with('abilities')->orderBy('name')->get();
+        $exit_categories = \Silber\Bouncer\Database\Role::where('form_type', 2)->with('abilities')->orderBy('name')->get();
         $employee_abilities = ExitForm::where('employee_id', $id)->with('user')->get()->toArray();
         $user_categories = $user->getRoles()->toArray();
         
         $adminlist=User::select('*')
-        ->where('user_type', '=', 'admin')->where('id', '!=',Auth::id())
-        ->get();
+            ->where('user_type', '=', 'admin')->where('id', '!=',Auth::id())
+            ->get();
 
         return view('admin.exit-form', [
-            'categories' => $entry_categories,
+            'categories' => $exit_categories,
             'user_categories' => $user_categories,
             'employee_abilities' => $employee_abilities,
             'user' => $user,
@@ -172,13 +173,17 @@ class AdminController extends Controller
     {
         $user_id = Auth::id();
         $user = User::where('id', $user_id)->first();
+        $user_roles = $user->getRoles()->toArray();
+        $exit_categories = \Silber\Bouncer\Database\Role::where('form_type', 2)->with('abilities')->orderBy('name')->get();
         $user_abilitites = $user->getAbilities()->pluck('id')->toArray();
+        $user_roles_abilitites = [];
+
         $remaining_exits = null;
-        if (isset($request->abilities)) {
-            $abilities  = $request->abilities;
-            foreach ($abilities as $ability) {
+        if(isset($request->abilities)) {
+            $abilities = $request->abilities;
+            foreach($abilities as $ability) {
                 $form = ExitForm::where('employee_id', $id)->where('ability_id', $ability)->first();
-                if (empty($form)) {
+                if(empty($form)) {
                     ExitForm::create([
                         'employee_id' => $id,
                         'ability_id' => $ability,
@@ -187,25 +192,42 @@ class AdminController extends Controller
                     ]);
                 }
             }
-            if ($user->user_type == 'super_admin') {
+            if($user->user_type == 'super_admin') {
                 ExitForm::where('employee_id', $id)->whereNotIn('ability_id', $abilities)->delete();
             } else {
                 $remaining_exits = ExitForm::where('employee_id', $id)->whereNotIn('ability_id', $abilities)->get();
             }
         } else {
-            if ($user->user_type == 'super_admin') {
+            if($user->user_type == 'super_admin') {
                 ExitForm::where('employee_id', $id)->delete();
             } else {
-                $remaining_exits =  ExitForm::where('employee_id', $id)->get();
+                $remaining_exits = ExitForm::where('employee_id', $id)->get();
             }
         }
-        if ($remaining_exits != null) {
-            foreach ($remaining_exits as $entry) {
-                if (in_array($entry->ability_id, $user_abilitites)) {
+
+        if($remaining_exits != null) {
+            foreach($remaining_exits as $entry) {
+                if(in_array($entry->ability_id, $user_abilitites)) {
                     $entry->delete();
                 }
             }
         }
+
+        foreach($exit_categories as $exit_cat) {
+            if(in_array($exit_cat->name, $user_roles)) {
+                // Select the completed abilities and mark the status
+                foreach($exit_cat->abilities as $exit_ability) {
+                    $cat_abilities[] = $exit_ability->id;
+                }
+
+                $completed_abilities = ExitForm::where('employee_id', $id)->where('user_id', $user_id)->whereIn('ability_id', $cat_abilities)->get();
+
+                if(count($cat_abilities) == count($completed_abilities)) {
+                    Tasks::where('employee_id', $id)->where('admin_id', $user_id)->where('category_id', $exit_cat->id)->update(['status' => 1]);
+                }
+            }
+        }
+
         return redirect()->intended("exit-form/$id");
     }
 

@@ -94,7 +94,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="phone">Phone Ext :</label>
+                            <label class="form-label" for="phone">Phone :</label>
                             <span id="phone">+1{{ $employee->phone }}</span>
                         </div>
                     </div>

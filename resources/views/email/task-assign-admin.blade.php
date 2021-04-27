@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Admin User activation for Antietam Broadband</title>
+    <title>Antietam Broadband - New Task</title>
     <style>
       /* -------------------------------------
           GLOBAL RESETS
@@ -349,8 +349,8 @@
                     <tr>
                       <td>
                         <p>Hi {{$name}},</p>
-                        <p>You have been added to Antietam Broadband as an Admin User. Please set your password and activate your account by <a href="{{url('useractivation', $link)}}">clicking here</a> or copy pasting link below in the browser.</p>
-                        <p>{{url('useractivation', $link)}}</p>
+                        <p>New task {{$category}} of {{$employee}} is assigned for you. You need to complete with in {{$date}}</p>
+                        
                         <div>Thanks</div>
 						            <div>Antietam Broadband</div>
                       </td>
