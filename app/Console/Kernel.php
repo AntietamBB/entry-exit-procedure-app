@@ -25,6 +25,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        // Daily cron for importing actuals from Quickbooks
+		$schedule->call('App\Http\Controllers\CronController@task_reminder')->dailyAt('00:05');
     }
 
     /**

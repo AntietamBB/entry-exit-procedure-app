@@ -9,7 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryItemController;
 use App\Http\Controllers\EmployeeController;
-
+use App\Http\Controllers\CronController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +73,8 @@ Route::match(['get', 'post'], 'entry-form-email/{id?}', [AdminController::class,
 Route::match(['get', 'post'], 'exit-form-email/{id?}', [AdminController::class, 'exit_form_email'])->middleware('admin');
 
 Route::match(['get', 'post'], 'employee/filter-data', [EmployeeController::class, 'filter_data'])->middleware('admin');
+
+Route::match(['get'], 'cron/task-reminder', [CronController::class, 'task_reminder']);
 
 Route::put('user', [UserController::class, 'resetpass'])->middleware('admin');
 
