@@ -16,9 +16,6 @@ class CronController extends Controller
                         ->with('employee')
                         ->with('category')
                         ->get();
-echo '<pre>';
-print_r( $tasks);
-exit;
 
         foreach($tasks as $task) {
             try {
