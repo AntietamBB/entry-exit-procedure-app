@@ -216,6 +216,7 @@ class AdminController extends Controller
         // Select the completed abilities and mark the status
         foreach($exit_categories as $exit_cat) {
             //if(in_array($exit_cat->name, $user_roles)) {
+                $cat_abilities = [];
                 foreach($exit_cat->abilities as $exit_ability) {
                     $cat_abilities[] = $exit_ability->id;
                 }
