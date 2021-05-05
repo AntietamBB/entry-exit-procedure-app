@@ -51,92 +51,46 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-label" for="startdate">Start Date</label>
-                                <div class="form-control-wrap">
-                                <input data-provide="datepicker" id="startdate" class="form-control" name="startdate" data-date-format="mm/dd/yyyy" placeholder="Select date"  value="{{old('startdate',date('m/d/Y', strtotime($employee->startdate)))}}">
-                                @error('startdate')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                        <div class="form-group">
+                            <label class="form-label" for="startdate">Start Date</label>
+                            <div class="form-control-wrap">
+                            <input data-provide="datepicker" id="startdate" class="form-control" name="startdate" data-date-format="mm/dd/yyyy" placeholder="Select date"  value="{{old('startdate',date('m/d/Y', strtotime($employee->startdate)))}}">
+                            @error('startdate')
+                                    <span class="invalid">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-label" for="exitdate">Exit Date</label>
-                                <div class="form-control-wrap">
-                               <input data-provide="datepicker" id="exitdate"  class="form-control" name="exitdate" data-date-format="mm/dd/yyyy" placeholder="Select date" value="{{($employee->exitdate ? date('m/d/Y', strtotime($employee->exitdate)):'')}}">
-                             </div>
-                               
-                            </div>
                     </div>
-
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="taskdate">Task Completion Date</label>
-                                <div class="form-control-wrap">
-                                    <input data-provide="datepicker" id="taskdate"  class="form-control" name="taskdate" data-date-format="mm/dd/yyyy" placeholder="Select date" value="{{($employee->task_completion_date ? date('m/d/Y', strtotime($employee->task_completion_date)):'')}}">
-                                </div>
-                               
+                            <label class="form-label" for="exitdate">Exit Date</label>
+                            <div class="form-control-wrap">
+                            <input data-provide="datepicker" id="exitdate"  class="form-control" name="exitdate" data-date-format="mm/dd/yyyy" placeholder="Select date" value="{{($employee->exitdate ? date('m/d/Y', strtotime($employee->exitdate)):'')}}">
+                            </div>
+                            
                         </div>
                     </div>
-                     
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-label" for="department">Department</label>
-                                <div class="form-control-wrap">
+                    
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="department">Department</label>
+                            <div class="form-control-wrap">
                                 <input type="text" class="form-control" id="department" name="department" value="{{ old('department',$employee->department) }}">
                                 @error('department')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                                    <span class="invalid">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="form-label" for="position">Position</label>
-                                <div class="form-control-wrap">
-                                <input type="text" class="form-control" id="position" name="position" value="{{ old('position',$employee->position) }}">
-                                @error('position')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="position">Position</label>
+                            <div class="form-control-wrap">
+                            <input type="text" class="form-control" id="position" name="position" value="{{ old('position',$employee->position) }}">
+                            @error('position')
+                                    <span class="invalid">{{ $message }}</span>
+                                @enderror
                             </div>
-                        </div>
-                    <div id="cat" class="col-lg-12">
-                        <hr>
-                        <div class="form-group" style="text-align:left;">
-                            <label class="form-label" style="color:#798bff;font-size:20px;text-decoration:underline;">Assign Categories to Admin Users</label>
-                        </div>
-
-                        <div class="row">
-                            @foreach($exit_categories as $role)
-                               <div class="col-lg-4" style="text-align:left;">
-                                  <div class="form-group">
-                                  		<label for="{{ $role->name }}" style="margin-top:8px;"><b>{{ $role->title }}</b></label>
-                                  </div>
-                               </div>
-                            
-                               <div class="col-lg-6">
-                                    <div class="form-control-select" style="float:left;margin-right:10px;margin-bottom:10px;width:250px;">
-                                      <select class="form-control" name="selectadmin[{{ $role->id }}][]">
-                                            <option value="">-- Select Admin User --</option>
-                                            @foreach($admin as $adm)
-                                                @foreach($adm['roles'] as $rle)
-													@if($rle['id'] == $role->id)
-														<option value="{{ $adm['id'] }}"
-															{{ (isset($tasks[$role->id]) && $tasks[$role->id]['admin_id'] == $adm['id']) ? 'selected': '' }}
-														>
-															{{ $adm['name'] }}
-														</option>
-														@continue
-													@endif
-                                            	@endforeach
-                                            @endforeach
-                                      </select>
-                                    </div>
-                               </div>
-                            @endforeach
                         </div>
                     </div>
 
@@ -159,24 +113,6 @@
 
         $('#exitdate').datepicker({
             autoclose: true
-        });
-
-        $('#taskdate').datepicker({
-            autoclose: true
-        });
-
-        if($("#taskdate").val() == "" || $("#taskdate").val() == null) {
-            $("#cat").hide(); 
-        } else {
-            $("#cat").show();
-        }
-
-        $("#taskdate").change(function(){
-            if($(this).val() == "" || $(this).val() == null) {
-                $("#cat").hide();
-            } else {
-                $("#cat").show();
-            }
         });
     });
 </script>

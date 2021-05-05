@@ -20,8 +20,8 @@ class EmployeeController extends Controller
     public function index()
     {
         $users = Employee::select('*')
-            ->where('user_type', '=', 'user')
-            ->get();
+                    ->where('user_type', '=', 'user')
+                    ->get();
 
         return view('admin.employee.index', ['users' => $users]);
     }
@@ -92,17 +92,17 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = Employee::find($id);
-        $admin = User::where('user_type','admin')->with('roles')->orderBy('id')->get()->toArray();
+        // $admin = User::where('user_type','admin')->with('roles')->orderBy('id')->get()->toArray();
         // echo '<pre>';
         // print_r($admin);
         // exit;
-	    $exit_categories = \Silber\Bouncer\Database\Role::where('form_type',2)->select(['id','name','title'])->orderBy('name')->get();
+	    // $exit_categories = \Silber\Bouncer\Database\Role::where('form_type',2)->select(['id','name','title'])->orderBy('name')->get();
 	    // echo '<pre>';
         // print_r($exit_categories);
         // exit;
-	    $tasks = Tasks::where('employee_id', $id)->get()->keyBy('category_id')->toArray();        
+	    // $tasks = Tasks::where('employee_id', $id)->get()->keyBy('category_id')->toArray();        
 		
-        return view('admin.employee.edit', ['tasks'=>$tasks,'admin'=>$admin,'employee' => $employee,'exit_categories' => $exit_categories]);
+        return view('admin.employee.edit', ['employee' => $employee]);
     }
 
     /**
@@ -130,11 +130,11 @@ class EmployeeController extends Controller
             $exitdate = NULL;
         }
 
-        if(isset($request['taskdate']) && $request['taskdate'] !="") {
-            $taskdate=  date("Y-m-d",strtotime($request['taskdate']));
-        } else {
-            $taskdate = NULL;
-        }
+        // if(isset($request['taskdate']) && $request['taskdate'] !="") {
+        //     $taskdate=  date("Y-m-d",strtotime($request['taskdate']));
+        // } else {
+        //     $taskdate = NULL;
+        // }
         
         $update = $employee->update([
             'name' => $request->name,
@@ -142,12 +142,12 @@ class EmployeeController extends Controller
             'phone' => $request->phone,
             'startdate' => $startdate,
             'exitdate' => $exitdate,
-            'task_completion_date' => $taskdate,
+            //'task_completion_date' => $taskdate,
             'department' => $request->department,
             'position' => $request->position,
         ]);
 
-        if($request->taskdate !="") {
+        /*if($request->taskdate !="") {
             $tasks = [];
             foreach($request->selectadmin as $k=>$admin) { 
                 $data = Tasks::select('*')
@@ -219,7 +219,7 @@ class EmployeeController extends Controller
            }
         } else {
             Tasks::where('employee_id', $id)->delete();
-        }
+        } */
 
         return redirect()->intended('employee');
     }

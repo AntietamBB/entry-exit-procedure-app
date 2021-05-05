@@ -110,14 +110,14 @@
                                             <div class="dropdown-body">
                                                 <div class="nk-notification">
                                                     @foreach($notifys as $notify) 
-                                                        <a href="{{ url('exit-form/'.$notify->employee->id) }}">    
+                                                        <a href="{{ url('exit-form/'.$notify['emp_id']) }}">    
                                                             <div class="nk-notification-item dropdown-inner">
                                                                 <div class="nk-notification-icon">
                                                                     <em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em>
                                                                 </div>
                                                                 <div class="nk-notification-content">
                                                                     <div class="nk-notification-text">
-                                                                    {{$notify->category->title}} section of the employee <b>{{$notify->employee->name}}</b> is assigned to you. Due date is {{date('M d, Y', strtotime($notify->target_date))}}.
+                                                                        {{ $notify['cat_name'] }} section in exit form of the employee <b>{{ $notify['emp_name'] }}</b> is pending. Due date is {{ date('M d, Y', strtotime($notify['due_date'])) }}.
                                                                     </div>
                                                                 </div>
                                                             </div>
