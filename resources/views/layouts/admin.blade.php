@@ -94,13 +94,13 @@
                             <div class="nk-header-tools">
                                 <ul class="nk-quick-nav">
                                     <li class="dropdown notification-dropdown mr-n1" style="max-height:36px;">
-                                        <a href="#" class="dropdown-toggle nk-quick-nav-icon" style="padding-bottom: 0;padding-top: 3px;" data-toggle="dropdown" aria-expanded="false">
                                         @if(count($notifys) > 0)  
-                                            <div class="icon-status icon-status-info">
-                                                <em class="icon ni ni-bell"style="font-size: 33px;"></em>
-                                            </div>
+                                            <a href="#" class="dropdown-toggle nk-quick-nav-icon" style="padding-bottom: 0;padding-top: 3px;" data-toggle="dropdown" aria-expanded="false">
+                                                <div class="icon-status icon-status-info">
+                                                    <em class="icon ni ni-bell"style="font-size: 33px;"></em>
+                                                </div>
+                                            </a>
                                         @endif
-                                        </a>
                                         <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1" style="">
                                             <div class="dropdown-head">
                                                 <span class="sub-title nk-dropdown-title" style="margin:0 auto;"><b>Notifications</b></span>
@@ -111,7 +111,7 @@
                                                 <div class="nk-notification">
                                                     @foreach($notifys as $notify) 
                                                         <a href="{{ url('exit-form/'.$notify['emp_id']) }}">    
-                                                            <div class="nk-notification-item dropdown-inner">
+                                                            <div class="nk-notification-item dropdown-inner" style="border-bottom:1px solid #eae6e6;padding:.5rem 1.75rem;">
                                                                 <div class="nk-notification-icon">
                                                                     <em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em>
                                                                 </div>

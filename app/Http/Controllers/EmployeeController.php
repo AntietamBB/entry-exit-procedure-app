@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employee;
-use App\Models\Tasks;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
@@ -91,16 +90,7 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        $employee = Employee::find($id);
-        // $admin = User::where('user_type','admin')->with('roles')->orderBy('id')->get()->toArray();
-        // echo '<pre>';
-        // print_r($admin);
-        // exit;
-	    // $exit_categories = \Silber\Bouncer\Database\Role::where('form_type',2)->select(['id','name','title'])->orderBy('name')->get();
-	    // echo '<pre>';
-        // print_r($exit_categories);
-        // exit;
-	    // $tasks = Tasks::where('employee_id', $id)->get()->keyBy('category_id')->toArray();        
+        $employee = Employee::find($id);      
 		
         return view('admin.employee.edit', ['employee' => $employee]);
     }
@@ -142,7 +132,7 @@ class EmployeeController extends Controller
             'phone' => $request->phone,
             'startdate' => $startdate,
             'exitdate' => $exitdate,
-            //'task_completion_date' => $taskdate,
+            'send_reminder' => $request->reminder,
             'department' => $request->department,
             'position' => $request->position,
         ]);

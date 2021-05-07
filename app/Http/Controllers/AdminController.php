@@ -7,7 +7,6 @@ use App\Rules\Filetype;
 use App\Models\Employee;
 use App\Models\ExitForm;
 use App\Models\EntryForm;
-use App\Models\Tasks;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;

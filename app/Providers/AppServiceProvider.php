@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Request;
 
 use Illuminate\Support\Facades\View;
 use App\Models\User;
 use App\Models\Employee;
 use App\Models\ExitForm;
+use Session;
 use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,22 +32,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        
         view()->composer('*', function ($view) 
         {
-            $notifys = array();
+            $notifys = Session::get('notifys', function() { return array(); });
 
-            if(isset(Auth::user()->id) && Auth::user()->user_type == 'admin') {
-                
-                // $notifys = Tasks::select('*')
-                //             ->where([
-                //                     ['admin_id', Auth::user()->id],
-                //                     ['status','=','0']
-                //                     ])
-                //             ->with('admin')
-                //             ->with('employee')
-                //             ->with('category')
-                //             ->get();
-
+            if(isset(Auth::user()->id) && Auth::user()->user_type == 'admin' && (strpos(Request::url(), "dashboard") || strpos(Request::url(), "exit-form"))) {
                 $user_id = Auth::user()->id;
                 $user = User::where('id', $user_id)->first();
                 $user_roles = $user->getRoles()->toArray();
@@ -82,10 +74,8 @@ class AppServiceProvider extends ServiceProvider
                         $i++;
                     }
                 }
-
-                // echo '<pre>';
-                // print_r($notifys);
-                // exit;
+                
+                Session::put('notifys', $notifys);
             }
 
             View::share('notifys', $notifys);

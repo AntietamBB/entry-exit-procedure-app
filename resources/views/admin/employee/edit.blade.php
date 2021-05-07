@@ -73,6 +73,21 @@
                     
                     <div class="col-lg-6">
                         <div class="form-group">
+                            <label class="form-label" for="exitdate">Send Reminders</label>
+                            <div class="form-control-wrap">
+                                <select class="form-control" name="reminder" id="reminder">
+                                
+                                    <option value="daily" {{ old('reminder',$employee->send_reminder)== 'daily' ? 'selected':'' }}>Daily</option>
+                                    <option value="hourly" {{ old('reminder',$employee->send_reminder)== 'hourly' ? 'selected':'' }}>Hourly (8.00 AM - 6.00 PM)</option>
+                    
+                                </select>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="form-group">
                             <label class="form-label" for="department">Department</label>
                             <div class="form-control-wrap">
                                 <input type="text" class="form-control" id="department" name="department" value="{{ old('department',$employee->department) }}">

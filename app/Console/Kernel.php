@@ -26,7 +26,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         // Daily cron for importing actuals from Quickbooks
-		$schedule->call('App\Http\Controllers\CronController@task_reminder')->dailyAt('00:05');
+        $schedule->call('App\Http\Controllers\CronController@daily_reminder')->dailyAt('01:00');
+        $schedule->call('App\Http\Controllers\CronController@hourly_reminder')->hourly()->between('8:00', '18:00');;
     }
 
     /**

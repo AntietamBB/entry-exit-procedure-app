@@ -74,7 +74,9 @@ Route::match(['get', 'post'], 'exit-form-email/{id?}', [AdminController::class, 
 
 Route::match(['get', 'post'], 'employee/filter-data', [EmployeeController::class, 'filter_data'])->middleware('admin');
 
-Route::match(['get'], 'cron/task-reminder', [CronController::class, 'task_reminder']);
+Route::match(['get'], 'cron/daily-reminder', [CronController::class, 'daily_reminder']);
+
+Route::match(['get'], 'cron/hourly-reminder', [CronController::class, 'hourly_reminder']);
 
 Route::put('user', [UserController::class, 'resetpass'])->middleware('admin');
 

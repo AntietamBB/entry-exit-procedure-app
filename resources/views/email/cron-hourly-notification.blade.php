@@ -347,13 +347,20 @@
                 <td class="wrapper">
                   <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                     <tr>
-						<td>
-							<p>Hi {{$name}},</p>
-							<p>Your task {{$category}} is not completed for the employee {{$employee}}. It should be completed within {{date('M d, Y', strtotime($date))}}.</p>
-							
-							<div>Thanks</div>
-							<div>Antietam Broadband</div>
-						</td>
+                      <td>
+                        <p>Hi {{$name}},</p>
+                        <p>Tasks pending for the employee <b>{{ $employee_name }}</b> are listed below. Due date is {{ date('M d, Y', strtotime($date)) }}.</p>
+                        <p>
+                          <ul>
+                            @foreach($data_list as $item) 
+                              <li>{{ $item }}</li>
+                            @endforeach
+                          </ul>  
+                        </p>
+
+                        <div>Thanks</div>
+                        <div>Antietam Broadband</div>
+                      </td>
                     </tr>
                   </table>
                 </td>

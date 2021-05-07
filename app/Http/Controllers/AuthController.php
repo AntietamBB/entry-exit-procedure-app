@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Session;
 
 class AuthController extends Controller
 {
@@ -32,7 +33,10 @@ class AuthController extends Controller
     }
 
     public function sign_in() {
-
+        $value = Session::get('notifys');
+//         echo '<pre>';
+// print_r($value);
+// exit;
         return view('auth.signin');
     }
 
@@ -42,7 +46,9 @@ class AuthController extends Controller
     }
 
     public function signout() {
-    	Auth::logout();
+        Auth::logout();
+        Session::flush();
+
     	return redirect()->intended('sign-in');
     }
 
