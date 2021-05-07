@@ -212,22 +212,6 @@ class AdminController extends Controller
             }
         }
 
-        // Select the completed abilities and mark the status
-        // foreach($exit_categories as $exit_cat) {
-        //     //if(in_array($exit_cat->name, $user_roles)) {
-        //         $cat_abilities = [];
-        //         foreach($exit_cat->abilities as $exit_ability) {
-        //             $cat_abilities[] = $exit_ability->id;
-        //         }
-
-        //         $completed_abilities = ExitForm::where('employee_id', $id)->whereIn('ability_id', $cat_abilities)->get();
-
-        //         if(count($cat_abilities) == count($completed_abilities)) {
-        //             Tasks::where('employee_id', $id)->where('category_id', $exit_cat->id)->update(['status' => 1]);
-        //         }
-        //     //}
-        // }
-
         return redirect()->intended("exit-form/$id");
     }
 

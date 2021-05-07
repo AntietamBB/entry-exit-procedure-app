@@ -60,8 +60,9 @@ class AppServiceProvider extends ServiceProvider
                     }
                 }
                 
+                $notifys = array();
+                $i = 0;
                 foreach($employees as $employee) {
-                    $i = 0;
                     foreach($user->roles as $role) {
                         $completed_abilities = ExitForm::where('employee_id', $employee->id)->whereIn('ability_id', $cat_abilities[$role->id])->get();
 
@@ -70,8 +71,8 @@ class AppServiceProvider extends ServiceProvider
                             $notifys[$i]['cat_name'] = $role->title;
                             $notifys[$i]['emp_name'] = $employee->name;
                             $notifys[$i]['due_date'] = $employee->exitdate;
+                            $i++;
                         }
-                        $i++;
                     }
                 }
                 
