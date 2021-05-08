@@ -41,11 +41,11 @@ class AppServiceProvider extends ServiceProvider
                 $user_id = Auth::user()->id;
                 $user = User::where('id', $user_id)->first();
                 $user_roles = $user->getRoles()->toArray();
-                $exit_categories = \Silber\Bouncer\Database\Role::where('form_type', 2)
-                                ->whereIn('name', $user_roles)
-                                ->with('abilities')
-                                ->orderBy('name')
-                                ->get();
+                // $exit_categories = \Silber\Bouncer\Database\Role::where('form_type', 2)
+                //                 ->whereIn('name', $user_roles)
+                //                 ->with('abilities')
+                //                 ->orderBy('name')
+                //                 ->get();
 
                 $employees = Employee::select('*')
                                 ->where('user_type', '=', 'user')
@@ -55,23 +55,27 @@ class AppServiceProvider extends ServiceProvider
 
                 $cat_abilities = [];
                 foreach($user->roles as $role) {
-                    foreach($role->abilities as $ability) {
-                        $cat_abilities[$role->id][] = $ability->id;
+                    if($role->form_type == 2) {
+                        foreach($role->abilities as $ability) {
+                            $cat_abilities[$role->id][] = $ability->id;
+                        }
                     }
                 }
-                
+
                 $notifys = array();
                 $i = 0;
                 foreach($employees as $employee) {
                     foreach($user->roles as $role) {
-                        $completed_abilities = ExitForm::where('employee_id', $employee->id)->whereIn('ability_id', $cat_abilities[$role->id])->get();
+                        if($role->form_type == 2) {
+                            $completed_abilities = ExitForm::where('employee_id', $employee->id)->whereIn('ability_id', $cat_abilities[$role->id])->get();
 
-                        if(count($cat_abilities[$role->id]) != count($completed_abilities)) {
-                            $notifys[$i]['emp_id'] = $employee->id;
-                            $notifys[$i]['cat_name'] = $role->title;
-                            $notifys[$i]['emp_name'] = $employee->name;
-                            $notifys[$i]['due_date'] = $employee->exitdate;
-                            $i++;
+                            if(count($cat_abilities[$role->id]) != count($completed_abilities)) {
+                                $notifys[$i]['emp_id'] = $employee->id;
+                                $notifys[$i]['cat_name'] = $role->title;
+                                $notifys[$i]['emp_name'] = $employee->name;
+                                $notifys[$i]['due_date'] = $employee->exitdate;
+                                $i++;
+                            }
                         }
                     }
                 }
