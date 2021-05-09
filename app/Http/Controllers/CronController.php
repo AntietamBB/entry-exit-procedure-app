@@ -49,27 +49,31 @@ class CronController extends Controller
             $user_tasks = array();
             $i = 0;
             foreach($user->roles as $rle) {
-                if(isset($incomplete_employee_categories[$rle->id])) {
-                    foreach($incomplete_employee_categories[$rle->id] as $empl) {
-                        $user_tasks[$i]['category_name'] = $rle->title;
-                        $user_tasks[$i]['employee_name'] = $empl->name;
-                        $user_tasks[$i]['date'] = $empl->exitdate;
-                        $i++;
+                if($rle->form_type == 2) {
+                    if(isset($incomplete_employee_categories[$rle->id])) {
+                        foreach($incomplete_employee_categories[$rle->id] as $empl) {
+                            $user_tasks[$i]['category_name'] = $rle->title;
+                            $user_tasks[$i]['employee_name'] = $empl->name;
+                            $user_tasks[$i]['date'] = $empl->exitdate;
+                            $i++;
+                        }
                     }
                 }
             }
             
-            try {
-                $dat['email'] = $user->email;
-                $dat['name'] = $user->name;
-                $dat['subject'] = "Antietam Broadband - Pending Tasks!";
+            if(!empty($user_tasks)) {
+                try {
+                    $dat['email'] = $user->email;
+                    $dat['name'] = $user->name;
+                    $dat['subject'] = "Antietam Broadband - Pending Tasks!";
 
-                Mail::send('email.cron-daily-notification', ['name' => $dat['name'], 'data_list' => $user_tasks] ,function ($m) use ($dat){
-                    $m->from(env('MAIL_FROM_ADDRESS'), 'Antietam Broadband');
-                    $m->to($dat['email'], $dat['name'])->subject($dat['subject']);
-                });
-            } catch (Exception $e) {
-                echo 'Message: ' . $e->getMessage();
+                    Mail::send('email.cron-daily-notification', ['name' => $dat['name'], 'data_list' => $user_tasks] ,function ($m) use ($dat){
+                        $m->from(env('MAIL_FROM_ADDRESS'), 'Antietam Broadband');
+                        $m->to($dat['email'], $dat['name'])->subject($dat['subject']);
+                    });
+                } catch (Exception $e) {
+                    echo 'Message: ' . $e->getMessage();
+                }
             }
         }
     }
@@ -112,10 +116,12 @@ class CronController extends Controller
         foreach($users as $user) {
             $user_tasks = array();
             foreach($user->roles as $rle) {
-                if(isset($incomplete_employee_categories[$rle->id])) {
-                    foreach($incomplete_employee_categories[$rle->id] as $empl) {
-                        $user_tasks[$empl->id]['employee'] = $empl;
-                        $user_tasks[$empl->id]['categories'][] = $rle->title;
+                if($rle->form_type == 2) {
+                    if(isset($incomplete_employee_categories[$rle->id])) {
+                        foreach($incomplete_employee_categories[$rle->id] as $empl) {
+                            $user_tasks[$empl->id]['employee'] = $empl;
+                            $user_tasks[$empl->id]['categories'][] = $rle->title;
+                        }
                     }
                 }
             }
